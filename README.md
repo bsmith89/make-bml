@@ -1,3 +1,9 @@
+---
+title: (GNU)Make for reproducible bioinformatics pipelines
+author: Byron J. Smith
+
+---
+
 This is the repository for a lesson on Make for bioinformatics pipelines at
 Titus Brown's 2016 Workshop at Bodega Marine Labs
 
