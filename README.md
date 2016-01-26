@@ -7,6 +7,13 @@ author: Byron J. Smith
 This is the repository for a lesson on Make for bioinformatics pipelines at
 Titus Brown's 2016 Workshop at Bodega Marine Labs
 
+
+## Reference ##
+
+<http://kbroman.org/minimal_make/>
+<http://swcarpentry.github.io/make-novice/>
+
+
 ## TODO ##
 
 -   [x] License
