@@ -10,8 +10,8 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
 
 ## Reference ##
 
-<http://kbroman.org/minimal_make/>
-<http://swcarpentry.github.io/make-novice/>
+-   <http://kbroman.org/minimal_make/>
+-   <http://swcarpentry.github.io/make-novice/>
 
 
 ## TODO ##
