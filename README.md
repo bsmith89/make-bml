@@ -39,3 +39,71 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
     start, using a variety of tools, including Make.
 -   Students know how to build-in testing to their workflows, both unit and
     integration.
+
+
+## Outline ##
+
+I.  Setup **[15 minutes]**
+    A.  AWS?
+    A.  Download SWC's [make-lesson.zip][make-lesson-zip]
+        1.  Do I want to change this data?
+    A.  Extract to some directory (which one?)
+    A.  `tree`?
+I.  Motivation (Zipf's law example) **[15 minutes]**
+    A.  Describe an analysis workflow
+    A.  Write (show)? a script which carries out the workflow
+    A.  Explain the limitations/annoyances
+        1.  What if we change one of our scripts?  What do we need to re-run?
+        1.  The relationships between files aren't always obvious to a reader
+        1.  Modular analyses
+    A.  Describe what we really want (Make!)
+        1.  Use a program to figure all of that out for us!
+        1.  Write an executible description of our workflow.
+        1.  Inspire best practices for git use, project directory structure.
+I.  Makefile basics **[45 minutes]**
+    A.  `Makefile` With just one target
+        1.
+            ```Makefile
+            isles.dat: books/isles.txt
+                python wordcount.py books/isles.txt isles.dat
+            ```
+        1.  target/pre-requisite/recipe syntax
+    A.  Running Make
+        1.  `make [target]` (runs the recipe)
+        1.  `make [target]` (target is up to date and is not re-made unless we
+            `touch` the pre-requisites)
+        1.  `make -n [target]` (dry-run)
+        1.  `make` (no arguments; runs first recipe in the file)
+    A.  Adding more recipes
+        1.
+            ```Makefile
+            abyss.dat: books/abyss.txt
+                python wordcount.py books/abyss.txt abyss.dat
+            ```
+        1.  Challenge question: Write two new rules
+            a.  One for `last.dat`
+            a.  One for `analysis.tar.gz` which is a tarball of all three
+                `.dat` files
+    A.  Convenience recipes
+        1.  `clean` / `all`
+        1.  `.PHONY` (otherwise a file named `clean` would mess everything up)
+I.  Make features **[45 minutes]**
+    A.  Don't Repeat Yourself (D.R.Y. Principle)
+    A.  Automatic variables
+        1.  `$@`
+        1.  `$^`
+        1.  Challenge question here
+    A.  Pattern rules
+        1.  Challenge question here
+    A.  Functions
+    A.  User-defined variables
+    A.  `make -j`
+    A.  `@` and `-` prefixes
+I.  Best practices **[60 minutes]**
+    A.  Dependency is important
+        1.  Introduce a makefile-plotter?
+    A.  Git integration (what do you version control?)
+    A.  Don't hard-code stuff (Makefile is the source of all (most) truth)
+    A.  Put it all together
+
+[make-lesson-zip]: http://swcarpentry.github.io/make-novice/make-lesson.zip
