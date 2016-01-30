@@ -18,7 +18,8 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
 
 -   [x] License
 -   [ ] Port portions of the SWC Make lesson
--   [ ] Write out learning objectives
+-   [x] Outline lesson
+-   [x] Write out learning objectives
 -   [ ] Consider what concept/challenge questions to use during the lesson
 -   [ ] Harden Makefile graph plotting scripts
 
