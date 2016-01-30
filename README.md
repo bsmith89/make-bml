@@ -107,3 +107,13 @@ I.  Best practices **[60 minutes]**
     A.  Put it all together
 
 [make-lesson-zip]: http://swcarpentry.github.io/make-novice/make-lesson.zip
+
+
+## Requirements ##
+
+-   UNIX system
+-   GNU Make installed (particular version?)
+-   Graphviz (?)
+-   Python (3?)
+-   Git
+-   Internet connection for downloading resources.
