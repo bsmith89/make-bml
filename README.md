@@ -20,7 +20,13 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
 -   [ ] Port portions of the SWC Make lesson
 -   [x] Outline lesson
 -   [x] Write out learning objectives
+-   [ ] Amend the contents of the lesson archive to streamline this lesson
+    -   [ ] `chmod +x` the scripts
+    -   [ ] Add an `--ascii` flag to plotwords.py
+    -   [ ] Add `run_pipeline.sh` (?)
+    -   [ ] Patch `countwords.py` for output to be tab delimited
 -   [ ] Consider what concept/challenge questions to use during the lesson
+    -   [ ] Do I want to add an answers page?
 -   [ ] Harden Makefile graph plotting scripts
 
 ## Learning Objectives ##
