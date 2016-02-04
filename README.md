@@ -116,3 +116,5 @@ I.  Best practices **[60 minutes]**
 -   Python (3?)
 -   Git
 -   Internet connection for downloading resources.
+-   Pandoc (?)
+-   tree (?)
