@@ -393,7 +393,7 @@ Right now, our Makefile says
 
 > `books/isles.txt` &#8594; `isles.words.tsv`
 
-where the '&#8594;' is pointing from requirements to targets.
+where the "&#8594;" is pointing from requirements to targets.
 
 Don't forget to commit.
 
@@ -604,11 +604,11 @@ Even though this rule doesn't have a recipe, it does have prerequisites.
 Now, when you run `make all` Make will do what it needs to to bring
 all three of those targets up to date.
 
-It is traditional for `all:` to be the first recipe in a Makefile,
+It is traditional for "`all:`" to be the first recipe in a makefile,
 since the first recipe is what is built by default
 when no other target is passed as an argument.
 
-Another traditional target is `clean`.
+Another traditional target is "`clean`".
 Add the following to your Makefile.
 
 ```makefile
@@ -623,7 +623,7 @@ What happens if you create a file named `clean` (i.e. `touch clean`)?
 When you run `make clean` you get `make: Nothing to be done for 'clean'.`.
 That's _not_ because all those files have already been removed.
 Make isn't that smart.
-Instead, make sees that there is already a file called `clean` and,
+Instead, make sees that there is already a file named "`clean`" and,
 since `clean` is newer than all of its (non-existent) prerequisites
 Make decides there's nothing left to do.
 
