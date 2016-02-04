@@ -528,7 +528,7 @@ Think of that recipe as a single line without the backslash.
 > Without doing it, what happens if you run `make isles.words.png`?
 
 > ### Challenge ###
-> What does the dependency graph look like for this Makefile?
+> What does the dependency graph look like for your Makefile?
 
 > ### Try it ###
 > What happens if you run `make zipf_results.tgz` right now?
