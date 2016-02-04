@@ -783,3 +783,34 @@ before running the recipe.
 >
 > Go ahead and rewrite all of the rules in your Makefile to minimize
 > repetition and take advantage of these automatic variables.
+
+#### Pattern Rules ####
+
+Another deviation from D.R.Y.:
+We have nearly identical recipes for `abyss.words.tsv` and `isles.words.tsv`.
+
+It turns out we can replace _both_ of those rules with just one rule,
+by telling Make about the relationships between filename _patterns_.
+
+A "pattern rule" looks like this:
+
+```makefile
+%.words.tsv: books/%.txt
+	countwords.py $^ $@
+```
+
+Here we've replaced the book name with a percent sign, "`%`".
+The "`%`" is called the "stem"
+and matches any sequence of characters in the target.
+(Kind of like a "`*`" in a path name, but they are _not_ the same.)
+Whatever it matches is then filled in to the prerequisites
+wherever there's a "`%`".
+
+This rule can be interpretted as:
+
+> In order to build a file named `[something].words.tsv` (the target)
+> find a file named `books/[that same something].txt` (the prerequisite)
+> and run `countwords.py [the prerequisite] [the target]`.
+
+Notice how helpful the automatic variables are here.
+This recipe will work no matter what stem is being matched!
