@@ -1,7 +1,7 @@
 all: README.html
 
 PANDOC_OPTS_GENERAL = --from markdown --smart --highlight-style pygments \
-                      --table-of-contents --toc-depth=4
+                      --table-of-contents --toc-depth=4 --preserve-tabs
 
 %.html: %.md
 	pandoc ${PANDOC_OPTS_GENERAL} -t html5 --standalone --mathjax=${MATHJAX} \

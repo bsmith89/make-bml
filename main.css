@@ -18,6 +18,9 @@ pre {
     background-color: #ececec;
     color: #1111111;
     padding: 0.5em;
+    tab-size: 4;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
 }
 
 /* Monospaced Spans */
