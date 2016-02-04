@@ -619,7 +619,12 @@ clean:
 Running `make clean` will now remove all of the cruft.
 
 Watch out, though!
-What happens if you create a file named `clean` (i.e. `touch clean`)?
+
+> ### Try it ###
+>
+> What happens if you create a file named `clean` (i.e. `touch clean`)
+> and then run `make clean`?
+
 When you run `make clean` you get `make: Nothing to be done for 'clean'.`.
 That's _not_ because all those files have already been removed.
 Make isn't that smart.
