@@ -350,7 +350,7 @@ For this tutorial we will be using an implementation of Make called
 GNU Make, although others exist.
 
 
-#### Simple Makefile ####
+#### Simple makefile ####
 
 Let's get started writing a description of our analysis for Make.
 
@@ -373,7 +373,7 @@ The whole thing is together called a **rule**.
 
 Notice that the indent is _not_ multiple spaces, but is instead a single tab
 character.
-This is the first gotcha in Makefiles.
+This is the first gotcha in makefiles.
 If the difference between spaces and a tab character isn't obvious in your
 editor of choice, try moving your cursor from one side of the tab to the other.
 It should _jump_ four or more spaces.
@@ -520,7 +520,7 @@ git commit -m "Add recipes for abyss counts, isles plotting, and the final archi
 
 Notice the backslash in the recipe for `zipf_results.tgz`.
 Just like many other languages,
-in Makefiles '\' is a line-continuation character.
+in makefiles "`\`" is a line-continuation character.
 Think of that recipe as a single line without the backslash.
 
 > ### Question ###
