@@ -640,3 +640,55 @@ are _not_ real files.
 git add Makefile
 git commit -m "Added all and clean recipes."
 ```
+
+
+### Make features [45 minutes] ###
+
+Right now our Makefile looks like this:
+
+```makefile
+# Dummy targets
+.PHONY: all clean
+
+all: isles.words.png abyss.words.png zipf_results.tgz
+
+clean:
+	rm --force *.words.tsv *.words.png zipf_results.tgz
+
+# Analysis and plotting
+isles.words.tsv: books/isles.txt
+	./wordcount.py books/isles.txt isles.words.tsv
+
+isles.words.png: isles.words.tsv
+	./plotcount.py isles.words.tsv isles.words.png
+
+abyss.words.tsv: books/abyss.txt
+	./wordcount.py books/abyss.txt abyss.words.tsv
+
+abyss.words.png: abyss.words.png
+    ./plotcount.py abyss.words.tsv abyss.words.png
+
+# Archive for sharing
+zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
+        isles.words.png abyss.words.png
+```
+
+I'm pretty happy with it.  What about you?
+Notice that I added comments, starting with the "`#`" character just like in
+Python, R, shell, etc.
+
+Using these recipes, a simple call to `make` builds all the same files that
+we were originally making either manually or using the master script,
+but with a few bonus features.
+
+Now, if we change one of my inputs, we don't have to rebuild everything.
+Instead, Make knows to only rebuild the files which, either directly or
+indirectly, depend on the file that changed.
+It's no longer our job to track those dependencies.
+One less cognitive burden getting in the way of making progress on our
+analysis.
+
+In addition, a makefile explicitly documents the inputs to and outputs
+from every step in the analysis.
+These are like informal "USAGE:" documentation for our scripts.
