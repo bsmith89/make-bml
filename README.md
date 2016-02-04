@@ -356,7 +356,7 @@ Let's get started writing a description of our analysis for Make.
 Open up a file called `Makefile` in your editor of choice (e.g. `nano Makefile`)
 and add the following:
 
-```make
+```Makefile
 isles.count.tsv: books/isles.txt
 	./wordcount.py books/isles.txt isles.words.tsv
 ```
@@ -489,7 +489,7 @@ it will assume that you want to build the first target in the Makefile.
 
 Let's add a few more recipes to our Makefile.
 
-```make
+```Makefile
 abyss.words.tsv: books/abyss.txt
 	./wordcount.py books/abyss.txt abyss.words.tsv
 
@@ -574,7 +574,7 @@ git status
 
 Sometimes its nice to have targets which don't refer to actual files.
 
-```make
+```Makefile
 all: isles.words.png abyss.words.png zipf_results.tgz
 ```
 
@@ -589,7 +589,7 @@ when no other target is passed as an argument.
 Another traditional target is `clean`.
 Add the following to your Makefile.
 
-```make
+```Makefile
 clean:
 	rm -f *.words.tsv *.words.png zipf_results.tgz
 ```
@@ -604,9 +604,10 @@ Make isn't that smart.
 Instead, make sees that there is already a file called `clean` and,
 since `clean` is newer than all of its (non-existent) prerequisites
 Make decides there's nothing left to do.
+
 To avoid this problem add the following to your Makefile.
 
-```make
+```Makefile
 .PHONY: all clean
 ```
 
