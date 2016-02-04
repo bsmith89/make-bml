@@ -1,5 +1,5 @@
 ---
-title: Reproducible bioinformatics pipelines using Make
+title: Reproducible bioinformatics pipelines using _Make_
 author: Byron J. Smith
 
 ---
@@ -214,21 +214,21 @@ and a variety of scripting languages.
 
 # Makefile basics [45 minutes] #
 
-"Make" is a computer program originally designed to automate the compilation
+_Make_ is a computer program originally designed to automate the compilation
 and installation of software.
-Make automates the process of building target files through a series of
+_Make_ automates the process of building target files through a series of
 discrete steps.
 Despite it's original purpose, this design makes it a great fit for
 bioinformatics pipelines, which often work by transforming data from one form
 to another (e.g. _raw data_ to _word counts_ to _...?_ to _profit_).
 
-For this tutorial we will be using an implementation of Make called
-GNU Make, although others exist.
+For this tutorial we will be using an implementation of _Make_ called
+_GNU Make_, although others exist.
 
 
 ## Simple makefile ##
 
-Let's get started writing a description of our analysis for Make.
+Let's get started writing a description of our analysis for _Make_.
 
 Open up a file called `Makefile` in your editor of choice (e.g. `nano Makefile`)
 and add the following:
@@ -257,9 +257,9 @@ If your recipe is not indented with a tab character it is likely to not work.
 
 Notice that this recipe is exactly the same as the analogous step in our
 master shell script.
-This is no coincidence; Make recipes _are_ shell scripts.
-The first line (target : prerequisites) explicitly declares two details
-that which were implicit in our pipeline script:
+This is no coincidence; _Make_ recipes _are_ shell scripts.
+The first line (_target_: _prerequisites_) explicitly declares two details
+that were implicit in our pipeline script:
 
 1.  We are generating a file called `isles.words.tsv`
 2.  Creating this file requires `books/isles.txt`
@@ -278,10 +278,10 @@ git add Makefile
 git commit -m "Start converting master script into a Makefile."
 ```
 
-## Running Make ##
+## Running _Make_ ##
 
 Now that we have a (currently incomplete) description of our pipeline,
-let's use Make to execute it.
+let's use _Make_ to execute it.
 
 First, remove the previously generated files.
 
@@ -295,7 +295,7 @@ make isles.words.tsv
 
 Quick aside:
 
-Notice that we didn't tell Make to use `Makefile`.
+Notice that we didn't tell _Make_ to use `Makefile`.
 When you run `make`, the program automatically looks in several places
 for your Makefile.
 While other filenames will work,
@@ -309,7 +309,7 @@ You should see the following print to the terminal:
 ./wordcount.py books/isles.txt isles.words.tsv
 ```
 
-By default, Make prints the recipes that it executes.
+By default, _Make_ prints the recipes that it executes.
 
 Let's see if we got what we expected.
 
@@ -320,28 +320,28 @@ head -5 isles.words.tsv
 The first 5 lines of that file should look exactly like before.
 
 
-## Re-running Make ##
+## Rerunning _Make_ ##
 
-Let's try running Make the same way again.
+Let's try running _Make_ the same way again.
 
 ```bash
 make isles.words.tsv
 ```
 
 This time, instead of executing the same recipe,
-Make prints `make: Nothing to be done for 'isles.words.tsv'.`
+_Make_ prints `make: Nothing to be done for 'isles.words.tsv'.`
 
 What's happening here?
 
-When you ask Make to make the target `isles.words.tsv` it first looks at
+When you ask _Make_ to make the target `isles.words.tsv` it first looks at
 the modification time.
 Next it looks at the modification time for its prerequisites.
-If the target is newer than the prerequisites Make decides that
+If the target is newer than the prerequisites _Make_ decides that
 the target is up-to-date and does not need to be remade.
 
 Much has been said about using modification times as the cue for remaking
 files.
-This can be another Make gotcha, so keep it in mind.
+This can be another _Make_ gotcha, so keep it in mind.
 
 If you want to induce the original behavior, you just have to
 change the modification time of `books/isles.txt` so that it is newer
@@ -354,9 +354,9 @@ make isles.words.tsv
 
 The original behavior is restored.
 
-Sometimes you just want Make to tell you what it thinks about the current
+Sometimes you just want _Make_ to tell you what it thinks about the current
 state of your files.
-`make --dry-run isles.words.tsv` will print Make's execution plan, without
+`make --dry-run isles.words.tsv` will print _Make_'s execution plan, without
 actually carrying it out.
 The flag can be abbreviated as `-n`.
 
@@ -365,7 +365,7 @@ it will assume that you want to build the first target in the Makefile.
 
 ## More recipes ##
 
-Now that Make knows how to build `isles.words.tsv`,
+Now that _Make_ knows how to build `isles.words.tsv`,
 we can add a rule for plotting those results.
 
 ```makefile
@@ -435,8 +435,8 @@ tar -czf zipf_results.tgz isles.words.tsv \
         abyss.words.tsv isles.words.png abyss.words.png
 ```
 
-Since you asked for `zipf_results.tgz` Make looked first for that file.
-Not finding it, Make looked for its prerequisites.
+Since you asked for `zipf_results.tgz` _Make_ looked first for that file.
+Not finding it, _Make_ looked for its prerequisites.
 Since none of those existed it remade the ones it could,
 `abyss.words.tsv` and `isles.words.tsv`.
 Once those were finished it was able to make `abyss.words.png` and
@@ -477,7 +477,7 @@ all: isles.words.png abyss.words.png zipf_results.tgz
 ```
 
 Even though this rule doesn't have a recipe, it does have prerequisites.
-Now, when you run `make all` Make will do what it needs to to bring
+Now, when you run `make all` _Make_ will do what it needs to to bring
 all three of those targets up to date.
 
 It is traditional for "`all:`" to be the first recipe in a makefile,
@@ -503,10 +503,10 @@ Watch out, though!
 
 When you run `make clean` you get `make: Nothing to be done for 'clean'.`.
 That's _not_ because all those files have already been removed.
-Make isn't that smart.
+_Make_ isn't that smart.
 Instead, make sees that there is already a file named "`clean`" and,
 since this file is newer than all of its prerequisites
-Make decides there's nothing left to do.
+_Make_ decides there's nothing left to do.
 
 To avoid this problem add the following to your Makefile.
 
@@ -514,7 +514,7 @@ To avoid this problem add the following to your Makefile.
 .PHONY: all clean
 ```
 
-This "special target" tells Make to assume that the targets "all", and "clean"
+This "special target" tells _Make_ to assume that the targets "all", and "clean"
 are _not_ real files;
 they're phony targets.
 
@@ -565,7 +565,7 @@ we were originally making either manually or using the master script,
 but with a few bonus features.
 
 Now, if we change one of my inputs, we don't have to rebuild everything.
-Instead, Make knows to only rebuild the files which, either directly or
+Instead, _Make_ knows to only rebuild the files which, either directly or
 indirectly, depend on the file that changed.
 It's no longer our job to track those dependencies.
 One less cognitive burden getting in the way of making progress on our
@@ -575,7 +575,7 @@ In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
 These are like informal "USAGE:" documentation for our scripts.
 
-## Parallel Make ##
+## Parallel _Make_ ##
 
 And check this out!
 
@@ -585,7 +585,7 @@ make --jobs
 ```
 
 Did you see it?
-The `--jobs` flag (just `-j` works too) tells Make to run recipes in _parallel_.
+The `--jobs` flag (just `-j` works too) tells _Make_ to run recipes in _parallel_.
 Our dependency graph clearly shows that
 `abyss.words.tsv` and `isles.words.tsv` are mutually independent and can
 both be built at the same time.
@@ -604,9 +604,9 @@ all of the details over and over again.
 This good habit of writing things out only once is known as the D.R.Y.
 principle.
 
-In Make a number of features are designed to minimize repetitive code.
+In _Make_ a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle.
-Turns out that Make is perfectly capable of solving these problems.
+Turns out that _Make_ is perfectly capable of solving these problems.
 
 ## Automatic Variables ##
 
@@ -629,9 +629,9 @@ Here we've replaced the prerequisite "`books/isles.txt`" in the recipe
 with "`$^`" and the target "`isles.words.tsv`" with "`$@`".
 Both "`$^`" and "`$@`" are variables which refer to all of the prerequisites and
 target of a rule, respectively.
-In Make, variables are referenced with a leading dollar sign symbol.
+In _Make_, variables are referenced with a leading dollar sign symbol.
 While we can also define our own variables,
-Make _automatically_ defines a number of variables, including each of these.
+_Make_ _automatically_ defines a number of variables, including each of these.
 
 ```makefile
 zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
@@ -657,7 +657,7 @@ make isles.words.tsv
 ```
 
 You should get the same output as last time.
-Internally, Make replaced "`$@`" with "`isles.words.tsv`"
+Internally, _Make_ replaced "`$@`" with "`isles.words.tsv`"
 and "`$^`" with "`books/isles.txt`"
 before running the recipe.
 
@@ -673,7 +673,7 @@ Another deviation from D.R.Y.:
 We have nearly identical recipes for `abyss.words.tsv` and `isles.words.tsv`.
 
 It turns out we can replace _both_ of those rules with just one rule,
-by telling Make about the relationships between filename _patterns_.
+by telling _Make_ about the relationships between filename _patterns_.
 
 A "pattern rule" looks like this:
 
