@@ -357,8 +357,8 @@ Let's get started writing a description of our analysis for Make.
 Open up a file called `Makefile` in your editor of choice (e.g. `nano Makefile`)
 and add the following:
 
-```Makefile
-isles.count.tsv: books/isles.txt
+```makefile
+isles.words.tsv: books/isles.txt
 	./wordcount.py books/isles.txt isles.words.tsv
 ```
 
@@ -491,7 +491,7 @@ it will assume that you want to build the first target in the Makefile.
 Now that Make knows how to build `isles.words.tsv`,
 we can add a rule for plotting those results.
 
-```Makefile
+```makefile
 isles.words.png: isles.words.tsv
 	./plotcount.py isles.words.tsv isles.words.png
 ```
@@ -502,7 +502,7 @@ The dependency graph now looks like:
 
 Let's add a few more recipes to our Makefile.
 
-```Makefile
+```makefile
 abyss.words.tsv: books/abyss.txt
 	./wordcount.py books/abyss.txt abyss.words.tsv
 
@@ -595,7 +595,7 @@ git status
 
 Sometimes its nice to have targets which don't refer to actual files.
 
-```Makefile
+```makefile
 all: isles.words.png abyss.words.png zipf_results.tgz
 ```
 
@@ -610,7 +610,7 @@ when no other target is passed as an argument.
 Another traditional target is `clean`.
 Add the following to your Makefile.
 
-```Makefile
+```makefile
 clean:
 	rm -f *.words.tsv *.words.png zipf_results.tgz
 ```
@@ -628,7 +628,7 @@ Make decides there's nothing left to do.
 
 To avoid this problem add the following to your Makefile.
 
-```Makefile
+```makefile
 .PHONY: all clean
 ```
 
