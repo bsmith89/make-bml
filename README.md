@@ -128,7 +128,7 @@ I.  Best practices **[60 minutes]**
 
 ## Draft ##
 
-### Setup ###
+### Setup [15 minutes] ###
 
 [AWS?]
 
@@ -167,7 +167,7 @@ The `tree` command produces a handy tree-diagram of the directory.
 [Do we have other requirements to install?]
 
 
-### Motivation ###
+### Motivation [15 minutes] ###
 
 > The most frequently-occurring word occurs approximately twice as
 > often as the second most frequent word. This is
@@ -336,7 +336,7 @@ mainstays of reproducible research: version control, UNIX style tools,
 and a variety of scripting languages.
 
 
-### `Makefile` basics ###
+### Makefile basics [45 minutes] ###
 
 "Make" is a computer program originally designed to automate the compilation
 and installation of software.
