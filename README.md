@@ -692,3 +692,21 @@ analysis.
 In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
 These are like informal "USAGE:" documentation for our scripts.
+
+#### Parallel Make ####
+
+And check this out!
+
+```bash
+make clean
+make --jobs
+```
+
+Did you see it?
+The `--jobs` flag (just `-j` works too) tells Make to run recipes in _parallel_.
+Our dependency graph clearly shows that
+`abyss.words.tsv` and `isles.words.tsv` are mutually independent and can
+both be built at the same time.
+Likewise for `abyss.words.png` and `isles.words.png`.
+If you've got a bunch of independent branches in your analysis, this can
+greatly speed up your build process.
