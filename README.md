@@ -34,12 +34,10 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
     documentation, but not intermediate data.
 
 ## Evangelizing Objectives ##
--   Students understand when Make is _not_ the best choice for organizing a
-    project (e.g. super compute-heavy workflows, building flexible tools, etc.)
 -   Students are inspired to make their workflows "reproducible" from the
     start, using a variety of tools, including Make.
--   Students know how to build-in testing to their workflows, both unit and
-    integration.
+-   Students understand when Make is _not_ the best choice for organizing a
+    project (e.g. super compute-heavy workflows, building flexible tools, etc.)
 
 
 ## Outline ##
