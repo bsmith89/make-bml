@@ -1,4 +1,4 @@
-all: README.html
+all: make-lesson.html
 
 PANDOC_OPTS_GENERAL = --from markdown --smart --highlight-style pygments \
                       --table-of-contents --toc-depth=4 --preserve-tabs
