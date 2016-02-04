@@ -819,3 +819,25 @@ This rule can be interpretted as:
 
 Notice how helpful the automatic variables are here.
 This recipe will work no matter what stem is being matched!
+
+We can replace _both_ of the rules which matched this pattern
+(`abyss.words.tsv` and `isles.words.tsv`) with just one rule.
+Go ahead and do that in your Makefile.
+
+> ### Try it ###
+>
+> After you've edited you've replaced the two rules with one pattern
+> rule, try removing all of the products and rerunning the pipeline.
+>
+> Is anything different now that you're using the pattern rule?
+
+> ### Practice ###
+>
+> Replace the recipes for `abyss.words.png` and `isles.words.png`
+> with a single pattern rule.
+
+> ### Challenge ###
+>
+> Add `books/sierra.txt` to your pipeline.
+>
+> (Plot the word counts and add the plots to `zipf_results.tgz`)
