@@ -50,14 +50,14 @@ I.  Setup **[15 minutes]**
     A.  `tree`?
 I.  Motivation (Zipf's law example) **[15 minutes]**
     A.  Describe an analysis workflow
-    A.  Write (show)? a script which carries out the workflow
+    A.  Write (show?) a script which carries out the workflow
     A.  Explain the limitations/annoyances
         1.  What if we change one of our scripts?  What do we need to re-run?
         1.  The relationships between files aren't always obvious to a reader
         1.  Modular analyses
     A.  Describe what we really want (Make!)
         1.  Use a program to figure all of that out for us!
-        1.  Write an executible description of our workflow.
+        1.  Write an executable description of our workflow.
         1.  Inspire best practices for git use, project directory structure.
 I.  Makefile basics **[45 minutes]**
     A.  `Makefile` With just one target
@@ -66,7 +66,7 @@ I.  Makefile basics **[45 minutes]**
             isles.dat: books/isles.txt
                 python wordcount.py books/isles.txt isles.dat
             ```
-        1.  target/pre-requisite/recipe syntax
+        1.  Target/pre-requisite/recipe syntax
     A.  Running Make
         1.  `make [target]` (runs the recipe)
         1.  `make [target]` (target is up to date and is not re-made unless we
