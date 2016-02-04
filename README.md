@@ -497,7 +497,8 @@ isles.words.png: isles.words.tsv
 	./plotcount.py isles.words.tsv isles.words.png
 
 zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
-	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
+        isles.words.png abyss.words.png
 ```
 
 And commit the changes.
@@ -506,6 +507,11 @@ And commit the changes.
 git add Makefile
 git commit -m "Add recipes for abyss counts, isles plotting, and the final archive."
 ```
+
+Notice the backslash in the recipe for `zipf_results.tgz`.
+Just like many other languages,
+in Makefiles '\' is a line-continuation character.
+Think of that recipe as a single line without the backslash.
 
 > ### Question ###
 > Without doing it, what happens if you run `make isles.words.png`?
@@ -539,7 +545,8 @@ to your terminal:
 ./wordcount.py books/isles.txt isles.words.tsv
 ./plotcount.py abyss.words.tsv abyss.words.png
 ./plotcount.py isles.words.tsv isles.words.png
-tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+tar -czf zipf_results.tgz isles.words.tsv \
+        abyss.words.tsv isles.words.png abyss.words.png
 ```
 
 Since you asked for `zipf_results.tgz` Make looked first for that file.
