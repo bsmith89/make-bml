@@ -28,6 +28,8 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
 -   [ ] Consider what concept/challenge questions to use during the lesson
     -   [ ] Do I want to add an answers page?
 -   [ ] Harden Makefile graph plotting scripts
+-   [ ] Consider making the first rule go all the way to the plot
+    and then split that up into two rules.
 
 ## Learning Objectives ##
 
