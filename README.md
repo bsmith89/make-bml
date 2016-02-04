@@ -150,6 +150,19 @@ tree
 
 The `tree` command produces a handy tree-diagram of the directory.
 
+```
+.
+├── books
+│   ├── LICENSE_TEXTS.md
+│   ├── abyss.txt
+│   ├── isles.txt
+│   ├── last.txt
+│   └── sierra.txt
+├── plotcount.py
+└── wordcount.py
+
+1 directory, 7 files
+```
 
 [Do we have other requirements to install?]
 
