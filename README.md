@@ -39,6 +39,17 @@ Titus Brown's 2016 Workshop at Bodega Marine Labs
 -   Students understand when Make is _not_ the best choice for organizing a
     project (e.g. super compute-heavy workflows, building flexible tools, etc.)
 
+## Requirements ##
+
+-   UNIX system
+-   GNU Make installed (particular version?)
+-   Graphviz (?)
+-   Python (3?)
+-   Git
+-   Internet connection for downloading resources.
+-   Pandoc (?)
+-   tree (?)
+-   unzip (?)
 
 ## Outline ##
 
@@ -107,17 +118,6 @@ I.  Best practices **[60 minutes]**
 
 [make-lesson-zip]: http://swcarpentry.github.io/make-novice/make-lesson.zip
 
-
-## Requirements ##
-
--   UNIX system
--   GNU Make installed (particular version?)
--   Graphviz (?)
--   Python (3?)
--   Git
--   Internet connection for downloading resources.
--   Pandoc (?)
--   tree (?)
 
 
 ## Draft ##
