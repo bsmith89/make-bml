@@ -725,3 +725,61 @@ principle.
 In Make a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle.
 Turns out that Make is perfectly capable of solving these problems.
+
+#### Automatic Variables ####
+
+One overly repetitive part of our Makefile:
+Targets and prerequisites are in the header _and_ the recipe of each rule.
+
+```makefile
+isles.words.tsv: books/isles.txt
+	./wordcount.py books/isles.txt isles.words.tsv
+```
+
+can be rewritten as
+
+```makefile
+isles.words.tsv: books/isles.txt
+	./wordcount.py $^ $@
+```
+
+Here we've replaced the prerequisite "`books/isles.txt`" in the recipe
+with "`$^`" and the target "`isles.words.tsv`" with "`$@`".
+Both "`$^`" and "`$@`" are variables which refer to all of the prerequisites and
+target of a rule, respectively.
+In Make, variables are referenced with a leading dollar sign symbol.
+While we can also define our own variables,
+Make _automatically_ defines a number of variables, including each of these.
+
+```makefile
+zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
+        isles.words.png abyss.words.png
+```
+
+can now be rewritten as
+
+```makefile
+zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+	tar -czf $@ $^
+```
+
+Phew!  That's much less cluttered,
+and still perfectly understandable once you know what the variables mean.
+
+Try it out!
+
+```bash
+make clean
+make isles.words.tsv
+```
+
+You should get the same output as last time.
+Internally, Make replaced "`$@`" with "`isles.words.tsv`"
+and "`$^`" with "`books/isles.txt`"
+before running the recipe.
+
+> ### Practice ###
+>
+> Go ahead and rewrite all of the rules in your Makefile to minimize
+> repetition and take advantage of these automatic variables.
