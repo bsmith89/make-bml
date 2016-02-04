@@ -629,7 +629,7 @@ When you run `make clean` you get `make: Nothing to be done for 'clean'.`.
 That's _not_ because all those files have already been removed.
 Make isn't that smart.
 Instead, make sees that there is already a file named "`clean`" and,
-since `clean` is newer than all of its (non-existent) prerequisites
+since this file is newer than all of its prerequisites
 Make decides there's nothing left to do.
 
 To avoid this problem add the following to your Makefile.
@@ -639,7 +639,8 @@ To avoid this problem add the following to your Makefile.
 ```
 
 This "special target" tells Make to assume that the targets "all", and "clean"
-are _not_ real files.
+are _not_ real files;
+they're phony targets.
 
 ```bash
 git add Makefile
@@ -788,6 +789,7 @@ before running the recipe.
 >
 > Go ahead and rewrite all of the rules in your Makefile to minimize
 > repetition and take advantage of these automatic variables.
+> Don't forget to commit your work.
 
 #### Pattern Rules ####
 
