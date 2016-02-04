@@ -480,8 +480,9 @@ The original behavior is restored.
 
 Sometimes you just want Make to tell you what it thinks about the current
 state of your files.
-`make -n isles.words.tsv` will print Make's execution plan, without
+`make --dry-run isles.words.tsv` will print Make's execution plan, without
 actually carrying it out.
+The flag can be abbreviated as `-n`.
 
 If you don't pass a target as an argument to make (i.e. just run `make`)
 it will assume that you want to build the first target in the Makefile.
@@ -612,7 +613,7 @@ Add the following to your Makefile.
 
 ```makefile
 clean:
-	rm -f *.words.tsv *.words.png zipf_results.tgz
+	rm --force *.words.tsv *.words.png zipf_results.tgz
 ```
 
 Running `make clean` will now remove all of the cruft.
