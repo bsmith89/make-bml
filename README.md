@@ -507,13 +507,17 @@ git add Makefile
 git commit -m "Add recipes for abyss counts, isles plotting, and the final archive."
 ```
 
-**Question:** Without doing it, what happens if you run `make isles.words.png`?
+> ### Question ###
+> Without doing it, what happens if you run `make isles.words.png`?
 
-**Challenge:** What does the dependency graph look like for this Makefile?
+> ### Challenge ###
+> What does the dependency graph look like for this Makefile?
 
-**Try it:** What happens if you run `make zipf_results.tgz` right now?
+> ### Try it ###
+> What happens if you run `make zipf_results.tgz` right now?
 
-**Practice:** Write a recipe for `abyss.words.png`.
+> ### Practice ###
+> Write a recipe for `abyss.words.png`.
 
 
 Once you've written a recipe for `abyss.words.png` you should be able to
@@ -545,8 +549,9 @@ Since none of those existed it remade the ones it could,
 Once those were finished it was able to make `abyss.words.png` and
 `isles.words.png`, before finally building `zipf_results.tgz`.
 
-**Try it:** What happens if you `touch abyss.words.tsv` and
-then `make zipf_results.tgz`?
+> ### Try it ###
+> What happens if you `touch abyss.words.tsv` and
+> then `make zipf_results.tgz`?
 
 ```bash
 git add Makefile
