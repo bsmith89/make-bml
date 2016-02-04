@@ -114,15 +114,14 @@ Together these scripts implement a common workflow:
 
 ## Writing a "master" script ##
 
-Carrying out this pipeline which transforms one book into a figure
-using the command-line is pretty easy.
+Running this pipeline for one book is pretty easy using the command-line.
 But once the number of files and the number of steps in the pipeline
 expands, this can turn into a lot of work.
-No one wants to sit and wait for a command to finish, even just for 30
+Plus, no one wants to sit and wait for a command to finish, even just for 30
 seconds.
 
 The most common solution to the tedium of data processing is to write
-a master script which carries out the pipeline from start to finish.
+a master script which runs the whole pipeline from start to finish.
 
 We can make a new file, `run_pipeline.sh` which contains:
 
@@ -171,13 +170,13 @@ git add plotcount.py
 git commit -m "Fix the figure legend."
 ```
 
-Now we want to re-create our figures.
+Now we want to recreate our figures.
 We _could_ just `bash run_pipeline.sh` again.
 That would work, but it could also be a big pain if counting words takes
 more than a few seconds.
 
-Alternatively, we could manually re-run the plotting for each word-count file
-and re-create the tarball.
+Alternatively, we could manually rerun the plotting for each word-count file
+and recreate the tarball.
 
 ```bash
 for file in *.words.tsv; do
@@ -190,23 +189,35 @@ tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
 
 But then we don't get many of the benefits of having a master script.
 
-Another popular option is to comment out the lines we don't want to
-re-run.
+Another popular option is to comment out a subset of the lines in
+`run_pipeline.sh`:
 
 ```bash
-nano run_pipeline.sh
-# Comment out the counting steps.
-bash run_pipeline.sh
+#!/usr/bin/env bash
+# USAGE: bash run_pipeline.sh
+# to produce plots for isles and abyss.
+
+# These lines are commented out because they don't need to be rerun.
+#./wordcount.py isles.txt isles.words.tsv
+#./wordcount.py abyss.txt abyss.words.tsv
+./plotcount.py isles.words.tsv isles.words.png
+./plotcount.py abyss.words.tsv abyss.words.png
+
+# Now archive the results in a tarball so we can share them with a colleague.
+tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
+    isles.words.png abyss.words.png
 ```
+
+Followed by `bash run_pipeline.sh`.
 
 But this process, and subsequently undoing it,
 can be a hassle and source of errors for complicated pipelines.
 
 What we really want is an executable _description_ of our pipeline that
 allows software to do the tricky part for us:
-figuring out what steps need to be re-run.
+figuring out what steps need to be rerun.
 It would also be nice if this tool encourage a _modular_ analysis
-and re-using instead of re-writing parts of our pipeline.
+and reusing instead of rewriting parts of our pipeline.
 As an added benefit, we'd like it all to play nice with the other
 mainstays of reproducible research: version control, UNIX style tools,
 and a variety of scripting languages.
@@ -220,13 +231,13 @@ _Make_ automates the process of building target files through a series of
 discrete steps.
 Despite it's original purpose, this design makes it a great fit for
 bioinformatics pipelines, which often work by transforming data from one form
-to another (e.g. _raw data_ to _word counts_ to _...?_ to _profit_).
+to another (e.g. _raw data_ &#8594; _word counts_ &#8594; _???_ &#8594; _profit_).
 
 For this tutorial we will be using an implementation of _Make_ called
 _GNU Make_, although others exist.
 
 
-## Simple makefile ##
+## A simple Makefile ##
 
 Let's get started writing a description of our analysis for _Make_.
 
@@ -238,7 +249,9 @@ isles.words.tsv: books/isles.txt
 	./wordcount.py books/isles.txt isles.words.tsv
 ```
 
-Here we have just about the simplest possible Makefile.
+We have now written the simplest non-trivial Makefile.
+It is pretty reminiscent of one of the lines from our master script.
+I bet you can figure out what this Makefile does.
 
 Be sure to notice a few syntactical items.
 
@@ -264,14 +277,15 @@ that were implicit in our pipeline script:
 1.  We are generating a file called `isles.words.tsv`
 2.  Creating this file requires `books/isles.txt`
 
-We'll think about our pipeline as a network of files.
-Right now, our Makefile says
+We'll think about our pipeline as a network of files which are dependent
+on one another.
+Right now our Makefile describes a pretty simple **dependency graph**.
 
 > `books/isles.txt` &#8594; `isles.words.tsv`
 
 where the "&#8594;" is pointing from requirements to targets.
 
-Don't forget to commit.
+Don't forget to commit:
 
 ```bash
 git add Makefile
@@ -293,15 +307,13 @@ rm *.words.tsv *.words.png
 make isles.words.tsv
 ```
 
-Quick aside:
-
-Notice that we didn't tell _Make_ to use `Makefile`.
-When you run `make`, the program automatically looks in several places
-for your Makefile.
-While other filenames will work,
-it is Good Idea to always call your Makefile `Makefile`.
-
-/aside
+> ### Aside ###
+>
+> Notice that we didn't tell _Make_ to use `Makefile`.
+> When you run `make`, the program automatically looks in several places
+> for your Makefile.
+> While other filenames will work,
+> it is Good Idea to always call your Makefile `Makefile`.
 
 You should see the following print to the terminal:
 
@@ -468,7 +480,7 @@ git status
 ```
 
 
-## Convenience Recipes ##
+## Convenience recipes ##
 
 Sometimes its nice to have targets which don't refer to actual files.
 
@@ -516,7 +528,7 @@ To avoid this problem add the following to your Makefile.
 
 This "special target" tells _Make_ to assume that the targets "all", and "clean"
 are _not_ real files;
-they're phony targets.
+they're **phony** targets.
 
 ```bash
 git add Makefile
@@ -524,18 +536,18 @@ git commit -m "Added all and clean recipes."
 ```
 
 
-# Make features [45 minutes] #
+# _Make_ features [45 minutes] #
 
 Right now our Makefile looks like this:
 
 ```makefile
 # Dummy targets
-.PHONY: all clean
-
 all: isles.words.png abyss.words.png zipf_results.tgz
 
 clean:
 	rm --force *.words.tsv *.words.png zipf_results.tgz
+
+.PHONY: all clean
 
 # Analysis and plotting
 isles.words.tsv: books/isles.txt
@@ -569,7 +581,7 @@ Instead, _Make_ knows to only rebuild the files which, either directly or
 indirectly, depend on the file that changed.
 It's no longer our job to track those dependencies.
 One less cognitive burden getting in the way of making progress on our
-analysis.
+analysis!
 
 In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
@@ -608,7 +620,7 @@ In _Make_ a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle.
 Turns out that _Make_ is perfectly capable of solving these problems.
 
-## Automatic Variables ##
+## Automatic variables ##
 
 One overly repetitive part of our Makefile:
 Targets and prerequisites are in the header _and_ the recipe of each rule.
@@ -667,7 +679,7 @@ before running the recipe.
 > repetition and take advantage of these automatic variables.
 > Don't forget to commit your work.
 
-## Pattern Rules ##
+## Pattern rules ##
 
 Another deviation from D.R.Y.:
 We have nearly identical recipes for `abyss.words.tsv` and `isles.words.tsv`.
@@ -683,7 +695,7 @@ A "pattern rule" looks like this:
 ```
 
 Here we've replaced the book name with a percent sign, "`%`".
-The "`%`" is called the "stem"
+The "`%`" is called the **stem**
 and matches any sequence of characters in the target.
 (Kind of like a "`*`" in a path name, but they are _not_ the same.)
 Whatever it matches is then filled in to the prerequisites
