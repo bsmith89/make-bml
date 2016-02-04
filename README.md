@@ -710,3 +710,18 @@ both be built at the same time.
 Likewise for `abyss.words.png` and `isles.words.png`.
 If you've got a bunch of independent branches in your analysis, this can
 greatly speed up your build process.
+
+#### D.R.Y. (Don't Repeat Yourself) ####
+
+In many programming language, the bulk of the language features are there
+to allow the programmer to describe long-winded computational routines as
+short, expressive, beautiful code.
+Features in Python or R like user-defined variables and functions are
+useful in part because they mean we don't have to write out (or think about)
+all of the details over and over again.
+This good habit of writing things out only once is known as the D.R.Y.
+principle.
+
+In Make a number of features are designed to minimize repetitive code.
+Our current makefile does _not_ conform to this principle.
+Turns out that Make is perfectly capable of solving these problems.
