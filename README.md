@@ -274,7 +274,7 @@ This master script solved several problems in computational reproducibility:
 3.  It prevents us from _repeating_ typos or mistakes.
     Figure out the correct command one time only.
 
-To continue with the good ideas, let's put everything under version control.
+To continue with the Good Ideas, let's put everything under version control.
 
 ```bash
 git init
@@ -423,7 +423,7 @@ Notice that we didn't tell Make to use `Makefile`.
 When you run `make`, the program automatically looks in several places
 for your Makefile.
 While other filenames will work,
-it is advisable to always call your Makefile `Makefile`.
+it is Good Idea to always call your Makefile `Makefile`.
 
 /aside
 
