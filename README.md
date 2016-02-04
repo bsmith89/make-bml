@@ -240,9 +240,10 @@ Together these scripts implement a common workflow:
 
 Carrying out this pipeline which transforms one book into a figure
 using the command-line is pretty easy.
-But what if we have multiple books?
-What if the pipeline is more complicated,
-What if an intermediate step takes a few minutes?
+But once the number of files and the number of steps in the pipeline
+expands, this can turn into a lot of work.
+No one wants to sit and wait for a command to finish, even just for 30
+seconds.
 
 The most common solution to the tedium of data processing is to write
 a master script which carries out the pipeline from start to finish.
@@ -390,9 +391,9 @@ that which were implicit in our pipeline script:
 We'll think about our pipeline as a network of files.
 Right now, our Makefile says
 
-> `isles.words.tsv` <-- `books/isles.txt`
+> `books/isles.txt` &#8594; `isles.words.tsv`
 
-where the arrow is pointing downstream, from requirements to targets.
+where the '&#8594;' is pointing from requirements to targets.
 
 Don't forget to commit.
 
@@ -487,14 +488,23 @@ it will assume that you want to build the first target in the Makefile.
 
 #### More recipes ####
 
+Now that Make knows how to build `isles.words.tsv`,
+we can add a rule for plotting those results.
+
+```Makefile
+isles.words.png: isles.words.tsv
+	./plotcount.py isles.words.tsv isles.words.png
+```
+
+The dependency graph now looks like:
+
+> `books/isles.txt` &#8594; `isles.words.tsv` &#8594; `isles.words.png`
+
 Let's add a few more recipes to our Makefile.
 
 ```Makefile
 abyss.words.tsv: books/abyss.txt
 	./wordcount.py books/abyss.txt abyss.words.tsv
-
-isles.words.png: isles.words.tsv
-	./plotcount.py isles.words.tsv isles.words.png
 
 zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
 	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
@@ -525,7 +535,6 @@ Think of that recipe as a single line without the backslash.
 > ### Practice ###
 > Write a recipe for `abyss.words.png`.
 
-
 Once you've written a recipe for `abyss.words.png` you should be able to
 run `make zipf_results.tgz`.
 
@@ -550,7 +559,7 @@ tar -czf zipf_results.tgz isles.words.tsv \
 ```
 
 Since you asked for `zipf_results.tgz` Make looked first for that file.
-When it didn't find that file it looked for its prerequisites.
+Not finding it, Make looked for its prerequisites.
 Since none of those existed it remade the ones it could,
 `abyss.words.tsv` and `isles.words.tsv`.
 Once those were finished it was able to make `abyss.words.png` and
