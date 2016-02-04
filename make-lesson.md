@@ -4,7 +4,7 @@ author: Byron J. Smith
 
 ---
 
-### Setup [15 minutes] ###
+# Setup [15 minutes] #
 
 [AWS?]
 
@@ -43,7 +43,7 @@ The `tree` command produces a handy tree-diagram of the directory.
 [Do we have other requirements to install?]
 
 
-### Motivation [15 minutes] ###
+# Motivation [15 minutes] #
 
 > The most frequently-occurring word occurs approximately twice as
 > often as the second most frequent word. This is
@@ -112,7 +112,7 @@ Together these scripts implement a common workflow:
 4.  Plot a graph of the analysis results.
 5.  Save the graph as an image, so we can put it in a paper.
 
-#### Writing a "master" script ####
+## Writing a "master" script ##
 
 Carrying out this pipeline which transforms one book into a figure
 using the command-line is pretty easy.
@@ -212,7 +212,7 @@ mainstays of reproducible research: version control, UNIX style tools,
 and a variety of scripting languages.
 
 
-### Makefile basics [45 minutes] ###
+# Makefile basics [45 minutes] #
 
 "Make" is a computer program originally designed to automate the compilation
 and installation of software.
@@ -226,7 +226,7 @@ For this tutorial we will be using an implementation of Make called
 GNU Make, although others exist.
 
 
-#### Simple makefile ####
+## Simple makefile ##
 
 Let's get started writing a description of our analysis for Make.
 
@@ -278,7 +278,7 @@ git add Makefile
 git commit -m "Start converting master script into a Makefile."
 ```
 
-#### Running Make ####
+## Running Make ##
 
 Now that we have a (currently incomplete) description of our pipeline,
 let's use Make to execute it.
@@ -320,7 +320,7 @@ head -5 isles.words.tsv
 The first 5 lines of that file should look exactly like before.
 
 
-#### Re-running Make ####
+## Re-running Make ##
 
 Let's try running Make the same way again.
 
@@ -363,7 +363,7 @@ The flag can be abbreviated as `-n`.
 If you don't pass a target as an argument to make (i.e. just run `make`)
 it will assume that you want to build the first target in the Makefile.
 
-#### More recipes ####
+## More recipes ##
 
 Now that Make knows how to build `isles.words.tsv`,
 we can add a rule for plotting those results.
@@ -468,7 +468,7 @@ git status
 ```
 
 
-#### Convenience Recipes ####
+## Convenience Recipes ##
 
 Sometimes its nice to have targets which don't refer to actual files.
 
@@ -524,7 +524,7 @@ git commit -m "Added all and clean recipes."
 ```
 
 
-### Make features [45 minutes] ###
+# Make features [45 minutes] #
 
 Right now our Makefile looks like this:
 
@@ -575,7 +575,7 @@ In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
 These are like informal "USAGE:" documentation for our scripts.
 
-#### Parallel Make ####
+## Parallel Make ##
 
 And check this out!
 
@@ -593,7 +593,7 @@ Likewise for `abyss.words.png` and `isles.words.png`.
 If you've got a bunch of independent branches in your analysis, this can
 greatly speed up your build process.
 
-#### D.R.Y. (Don't Repeat Yourself) ####
+## D.R.Y. (Don't Repeat Yourself) ##
 
 In many programming language, the bulk of the language features are there
 to allow the programmer to describe long-winded computational routines as
@@ -608,7 +608,7 @@ In Make a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle.
 Turns out that Make is perfectly capable of solving these problems.
 
-#### Automatic Variables ####
+## Automatic Variables ##
 
 One overly repetitive part of our Makefile:
 Targets and prerequisites are in the header _and_ the recipe of each rule.
@@ -667,7 +667,7 @@ before running the recipe.
 > repetition and take advantage of these automatic variables.
 > Don't forget to commit your work.
 
-#### Pattern Rules ####
+## Pattern Rules ##
 
 Another deviation from D.R.Y.:
 We have nearly identical recipes for `abyss.words.tsv` and `isles.words.tsv`.
