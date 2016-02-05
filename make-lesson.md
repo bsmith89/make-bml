@@ -748,3 +748,56 @@ Go ahead and do that in your Makefile.
 > Add `books/sierra.txt` to your pipeline.
 >
 > (Plot the word counts and add the plots to `zipf_results.tgz`)
+
+
+## User defined variables ##
+
+Not all variables in a makefile are of the automatic variety.
+Users can define their own, as well.
+
+Add this lines at the top of your makefile:
+
+```makefile
+ARCHIVED := isles.words.tsv isles.words.png \
+            abyss.words.tsv abyss.words.png \
+            sierra.words.tsv sierra.words.png
+```
+
+The variable `ARCHIVED` is a list of the files that we want to include in our
+tarball.
+Now wherever we write `${ARCHIVED}` it will be replaced with that list of files.
+The dollar sign, "`$`", and curly-braces, "`{}`", are both mandatory when
+inserting the contents of a variable.
+
+Notice the backslashes in the variable definition
+splitting the list over three lines, instead of one very long line.
+Also notice that we assigned to the variable with "`:=`".
+This is generally a Good Idea;
+Assigning with a normal equals sign can result in non-intuitive behavior
+(for reasons we may not talk about).
+Finally, notice that the items in our list are separated by _whitespace_,
+not commas.
+Prerequisite lists were the same way; this is just how lists of things work in
+makefiles.
+If you included commas they would be considered parts of the filenames.
+
+Using this variable we can replace the prerequisites of `zipf_results.tgz`.
+That rule would now be:
+
+```makefile
+zipf_results.tgz: ${ARCHIVED}
+	tar -czf $@ $^
+```
+
+We can also use `${OBJECTS}` to simplify our cleanup rule.
+
+```makefile
+clean:
+	rm --force ${ARCHIVED} zipf_results.tgz
+```
+
+> #### Try it ####
+>
+> Try running `clean` and then `all`.
+>
+> Does everything still work?
