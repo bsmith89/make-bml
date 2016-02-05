@@ -55,6 +55,14 @@ We've compiled our raw data, the books we want to analyze
 and have prepared several Python scripts which together make up our
 analysis pipeline.
 
+Before we begin, add a README to your project describing what we intend
+to do.
+
+```bash
+nano README.md
+# Describe what you're going to do. (e.g. "Test Zipf's Law")
+```
+
 The first step is to count the frequency of each word in the book.
 
 ```bash
@@ -161,11 +169,16 @@ To continue with the Good Ideas, let's put everything under version control.
 
 ```bash
 git init
+git add README.md
+git commit -m "Starting a new project."
 git add wordcount.py plotcount.py
 git commit -m "Write scripts to test Zipf's law."
 git add run_pipeline.sh
 git commit -m "Write a master script to run the pipeline."
 ```
+
+Notice that I didn't version control any of the products of our analysis.
+I'll talk more about this later.
 
 A master script is a good start, but it has a few shortcomings.
 
@@ -483,11 +496,12 @@ git commit -m "Finish translating pipeline script to a Makefile."
 git status
 ```
 
-Notice all the files that git wants to be tracking, but which we don't
-care about.
-Add a `.gitignore` file:
+Notice all the files that _Git_ wants to be tracking?
+Like I said before, we're not going to version control any of the intermediate
+or final products of our pipeline.
+To reflect this fact add a `.gitignore` file:
 
-```
+```.gitignore
 *.dat
 *.png
 zipf_results.tgz
@@ -750,7 +764,7 @@ Go ahead and do that in your Makefile.
 >
 > Is anything different now that you're using the pattern rule?
 >
-> If everything still works, commit your changes to _git_.
+> If everything still works, commit your changes to _Git_.
 
 > #### Practice ####
 >
@@ -764,7 +778,7 @@ Go ahead and do that in your Makefile.
 > (i.e. `make all` should plot the word counts and add the plots to
 > `zipf_results.tgz`)
 
-Commit your changes to _git_ before we move on.
+Commit your changes to _Git_ before we move on.
 
 
 ## User defined variables ##
@@ -877,9 +891,9 @@ When building `abyss.png`, for instance, it is replaced with
 
 > #### Try it ####
 >
-> What happens when you run the pipeline after modifying your script now?
+> What happens when you run the pipeline after modifying your script again?
 >
-> (This can be simulated with `touch plotcounts.py`.)
+> (Changes to your script can be simulated with `touch plotcounts.py`.)
 
 > #### Practice ####
 >
