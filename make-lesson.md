@@ -904,6 +904,125 @@ When building `abyss.png`, for instance, it is replaced with
 
 ## Directory structure ##
 
+Take a look at all of the clutter in your project directory (run `ls` to
+list all of the files).
+For such a small project that's a lot of junk!
+Imagine how hard it would be to find your way around this analysis
+if you had more than three steps?
+Let's move some stuff around to make our project easier to navigate.
+
+### Scripts go in `scripts/` ###
+
+First we'll stow away the scripts.
+
+```
+mkdir scripts/
+mv plotcounts.py wordcount.py scripts/
+```
+
+Which means we also need to update our Makefile to reflect the change:
+
+```makefile
+%.dat: countwords.py books/%.txt
+	$^ $@
+
+%.png: plotcounts.py %.dat
+	$^ $@
+```
+
+becomes:
+
+```makefile
+%.dat: scripts/countwords.py books/%.txt
+	$^ $@
+
+%.png: scripts/plotcounts.py %.dat
+	$^ $@
+```
+
+That's a little more verbose, but it is now explicit
+that `countwords.py` and `plotcount.py` are scripts.
+
+_Git_ should have no problem with the move once you tell it which files
+to be aware of.
+
+```bash
+git add countwords.py plotcounts.py
+git add scripts/countwords.py scripts/plotcounts.py
+git add Makefile
+git commit -m "Move scripts into a subdirectory."
+```
+
+Great!  From here on, when we add new scripts to our analysis they won't
+clutter up our project root.
+
+### Intermediate files go in `data/` ###
+
+Speaking of clutter, what are we gonna do about all of these intermediate files!?
+Put 'em in a subdirectory!
+
+```bash
+mkdir data/
+mv *.tsv data/
+```
+
+And then fix up your Makefile.
+Adjust the relevant lines to look like this.
+
+```makefile
+# ...
+
+ARCHIVED := data/isles.dat isles.png \
+            data/abyss.dat abyss.png \
+            data/sierra.dat sierra.png
+
+# ...
+
+data/%.dat: scripts/countwords.py books/%.txt
+	$^ $@
+
+%.png: scripts/plotcounts.py data/%.dat
+
+# ...
+```
+
+Thanks to our `ARCHIVED` variable, making these changes is pretty simple.
+
+We have to make one more change if we don't want _Git_ to bother us about
+untracked files.
+Update your `.gitignore`.
+
+```.gitignore
+data/*.dat
+*.png
+zipf_results.tgz
+LICENSE.md
+```
+
+Now commit your changes.
+
+```bash
+git add Makefile
+git add .gitignore
+```
+
+Simple!
+
+
+### Research outputs go in `fig/` ###
+
+> #### Practice ####
+>
+> Move the plots and `zipf_results.tgz` to a directory called `fig/`.
+
+You can call this directory something else if you prefer, but `fig/` seems
+short and descriptive.
+
+> #### Try it ####
+>
+> Does your pipeline still execute the way you expect?
+
+
 ## Flexible, modular analyses ##
 
 
