@@ -180,7 +180,8 @@ Now we want to recreate our figures.
 We _could_ just `bash run_pipeline.sh` again.
 That would work, but it could also be a big pain if counting words takes
 more than a few seconds.
-We don't need to do that part.
+The the word counting routine hasn't changed; we shouldn't need to recreate
+those files.
 
 Alternatively, we could manually rerun the plotting for each word-count file
 and recreate the tarball.
@@ -194,7 +195,8 @@ tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
     isles.words.png abyss.words.png
 ```
 
-But then we don't get many of the benefits of having a master script.
+But then we don't get many of the benefits of having a master script in
+the first place.
 
 Another popular option is to comment out a subset of the lines in
 `run_pipeline.sh`:
@@ -220,6 +222,8 @@ Followed by `bash run_pipeline.sh`.
 
 But this process, and subsequently undoing it,
 can be a hassle and source of errors in complicated pipelines.
+
+[Revise this part]
 
 What we really want is an executable _description_ of our pipeline that
 allows software to do the tricky part for us:
@@ -257,14 +261,14 @@ isles.words.tsv: books/isles.txt
 	./wordcount.py books/isles.txt isles.words.tsv
 ```
 
-We have now written the simplest non-trivial Makefile.
+We have now written the simplest, non-trivial Makefile.
 It is pretty reminiscent of one of the lines from our master script.
 It is a good bet that you can figure out what this Makefile does.
 
 Be sure to notice a few syntactical items.
 
 The part before the colon is called the **target** and the part after is our
-list of **prerequisites**.
+list of **prerequisites** (there is just one in this case).
 This first line is followed by an indented section called the **recipe**.
 The whole thing is together called a **rule**.
 
@@ -473,7 +477,8 @@ git commit -m "Finish translating pipeline script to a Makefile."
 git status
 ```
 
-Notice all the files that git wants to be tracking.
+Notice all the files that git wants to be tracking, but which we don't
+care about.
 Add a `.gitignore` file:
 
 ```
@@ -490,7 +495,7 @@ git status
 ```
 
 
-## Convenience recipes ##
+## Phony targets ##
 
 Sometimes its nice to have targets which don't refer to actual files.
 
@@ -527,7 +532,7 @@ When you run `make clean` you get `make: Nothing to be done for 'clean'.`.
 That's _not_ because all those files have already been removed.
 _Make_ isn't that smart.
 Instead, make sees that there is already a file named "`clean`" and,
-since this file is newer than all of its prerequisites
+since this file is newer than all of its prerequisites (there are none),
 _Make_ decides there's nothing left to do.
 
 To avoid this problem add the following to your Makefile.
@@ -629,14 +634,16 @@ This good habit of writing things out only once is known as the D.R.Y.
 principle.
 
 In _Make_ a number of features are designed to minimize repetitive code.
-Our current makefile does _not_ conform to this principle.
-Turns out that _Make_ is perfectly capable of solving these problems.
+Our current makefile does _not_ conform to this principle,
+but _Make_ is perfectly capable of solving the problem.
 
 
 ## Automatic variables ##
 
 One overly repetitive part of our Makefile:
-Targets and prerequisites are in the header _and_ the recipe of each rule.
+Targets and prerequisites are in both the header _and_ the recipe of each rule.
+
+It turns out, that
 
 ```makefile
 isles.words.tsv: books/isles.txt
@@ -674,12 +681,13 @@ zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.pn
 Phew!  That's much less cluttered,
 and still perfectly understandable once you know what the variables mean.
 
-Try it out!
-
-```bash
-make clean
-make isles.words.tsv
-```
+> #### Try it ####
+>
+> ```bash
+> make clean
+> make isles.words.tsv
+> ``````````
+<!--Those extra backticks are because of Vim syntax highlighting.-->
 
 You should get the same output as last time.
 Internally, _Make_ replaced "`$@`" with "`isles.words.tsv`"
