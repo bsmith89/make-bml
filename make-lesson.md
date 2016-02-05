@@ -872,3 +872,22 @@ When building `abyss.words.png`, for instance, it is replaced with
 > Update your other rules to include the relevant scripts as prerequisites.
 >
 > Commit your changes.
+
+
+## Directory structure ##
+
+## Flexible, modular analyses ##
+
+
+-   Modular development
+-   Add unstable scripts to the prerequisites
+-   File naming
+    -   Extensions and infixes
+-   Subfolders (remove clutter)
+-   What do we version control?
+-   Bootstrap your setup using _Make_
+-   UNIX style filters
+-   Download your data using _Make_
+-   Makefile grapher?
+-   Test data / phony target
+-   Debugging?
