@@ -747,7 +747,10 @@ Go ahead and do that in your Makefile.
 >
 > Add `books/sierra.txt` to your pipeline.
 >
-> (Plot the word counts and add the plots to `zipf_results.tgz`)
+> (i.e. `make all` should plot the word counts and add the plots to
+> `zipf_results.tgz`)
+
+Commit your changes to _git_ before we move on.
 
 
 ## User defined variables ##
