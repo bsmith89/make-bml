@@ -42,7 +42,7 @@ The `tree` command produces a handy tree-diagram of the directory.
 [Do we have other requirements to install?]
 
 
-# Motivation [15 minutes] #
+# Motivation [30 minutes] #
 
 > The most frequently-occurring word occurs approximately twice as
 > often as the second most frequent word. This is
@@ -132,6 +132,7 @@ We can make a new file, `run_pipeline.sh` which contains:
 
 ./wordcount.py isles.txt isles.words.tsv
 ./wordcount.py abyss.txt abyss.words.tsv
+
 ./plotcount.py isles.words.tsv isles.words.png
 ./plotcount.py abyss.words.tsv abyss.words.png
 
@@ -147,7 +148,8 @@ This master script solved several problems in computational reproducibility:
 2.  It allows us to type a single command, `bash run_pipeline.sh`, to
     reproduce the full analysis.
 3.  It prevents us from _repeating_ typos or mistakes.
-    Figure out the correct command one time only.
+    You might not get it right the first time, but once you fix something
+    it'll (probably) stay that way.
 
 To continue with the Good Ideas, let's put everything under version control.
 
@@ -161,11 +163,15 @@ git commit -m "Write a master script to run the pipeline."
 
 A master script is a good start, but it has a few shortcomings.
 
-Let's imagine that we adjusted the legend position
+Let's imagine that we adjusted the width of the bars in our plot.
 produced by `plotcount.py`.
 
 ```bash
-nano plotcount.py  # Edit the plotting script
+nano plotcount.py
+# In the definition of plot_word_counts replace:
+#    width = 1.0
+# with:
+#    width = 0.8
 git add plotcount.py
 git commit -m "Fix the figure legend."
 ```
@@ -174,6 +180,7 @@ Now we want to recreate our figures.
 We _could_ just `bash run_pipeline.sh` again.
 That would work, but it could also be a big pain if counting words takes
 more than a few seconds.
+We don't need to do that part.
 
 Alternatively, we could manually rerun the plotting for each word-count file
 and recreate the tarball.
@@ -200,6 +207,7 @@ Another popular option is to comment out a subset of the lines in
 # These lines are commented out because they don't need to be rerun.
 #./wordcount.py isles.txt isles.words.tsv
 #./wordcount.py abyss.txt abyss.words.tsv
+
 ./plotcount.py isles.words.tsv isles.words.png
 ./plotcount.py abyss.words.tsv abyss.words.png
 
@@ -211,7 +219,7 @@ tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
 Followed by `bash run_pipeline.sh`.
 
 But this process, and subsequently undoing it,
-can be a hassle and source of errors for complicated pipelines.
+can be a hassle and source of errors in complicated pipelines.
 
 What we really want is an executable _description_ of our pipeline that
 allows software to do the tricky part for us:
@@ -219,7 +227,7 @@ figuring out what steps need to be rerun.
 It would also be nice if this tool encourage a _modular_ analysis
 and reusing instead of rewriting parts of our pipeline.
 As an added benefit, we'd like it all to play nice with the other
-mainstays of reproducible research: version control, UNIX style tools,
+mainstays of reproducible research: version control, Unix-style tools,
 and a variety of scripting languages.
 
 
@@ -251,7 +259,7 @@ isles.words.tsv: books/isles.txt
 
 We have now written the simplest non-trivial Makefile.
 It is pretty reminiscent of one of the lines from our master script.
-I bet you can figure out what this Makefile does.
+It is a good bet that you can figure out what this Makefile does.
 
 Be sure to notice a few syntactical items.
 
@@ -345,9 +353,9 @@ _Make_ prints `make: Nothing to be done for 'isles.words.tsv'.`
 
 What's happening here?
 
-When you ask _Make_ to make the target `isles.words.tsv` it first looks at
-the modification time.
-Next it looks at the modification time for its prerequisites.
+When you ask _Make_ to make `isles.words.tsv` it first looks at
+the modification time of that target.
+Next it looks at the modification time for the target's prerequisites.
 If the target is newer than the prerequisites _Make_ decides that
 the target is up-to-date and does not need to be remade.
 
@@ -472,6 +480,7 @@ Add a `.gitignore` file:
 *.words.tsv
 *.words.png
 zipf_results.tgz
+LICENSE.md
 ```
 
 ```bash
@@ -533,7 +542,7 @@ they're **phony** targets.
 
 ```bash
 git add Makefile
-git commit -m "Added all and clean recipes."
+git commit -m "Added 'all' and 'clean' recipes."
 ```
 
 
@@ -561,7 +570,7 @@ abyss.words.tsv: books/abyss.txt
 	./wordcount.py books/abyss.txt abyss.words.tsv
 
 abyss.words.png: abyss.words.png
-    ./plotcount.py abyss.words.tsv abyss.words.png
+	./plotcount.py abyss.words.tsv abyss.words.png
 
 # Archive for sharing
 zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
@@ -569,20 +578,20 @@ zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.pn
         isles.words.png abyss.words.png
 ```
 
-I'm pretty happy with it.  What about you?
-Notice that I added comments, starting with the "`#`" character just like in
+Look's good, don't you think?
+Notice the added comments, starting with the "`#`" character just like in
 Python, R, shell, etc.
 
 Using these recipes, a simple call to `make` builds all the same files that
 we were originally making either manually or using the master script,
 but with a few bonus features.
 
-Now, if we change one of my inputs, we don't have to rebuild everything.
+Now, if we change one of the inputs, we don't have to rebuild everything.
 Instead, _Make_ knows to only rebuild the files which, either directly or
 indirectly, depend on the file that changed.
+This is called an **incremental build**.
 It's no longer our job to track those dependencies.
-One less cognitive burden getting in the way of making progress on our
-analysis!
+One fewer cognitive burden getting in the way of research progress!
 
 In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
@@ -702,7 +711,7 @@ A "pattern rule" looks like this:
 Here we've replaced the book name with a percent sign, "`%`".
 The "`%`" is called the **stem**
 and matches any sequence of characters in the target.
-(Kind of like a "`*`" in a path name, but they are _not_ the same.)
+(Kind of like a "`*`" (glob) in a path name, but they are _not_ the same.)
 Whatever it matches is then filled in to the prerequisites
 wherever there's a "`%`".
 
@@ -721,10 +730,13 @@ Go ahead and do that in your Makefile.
 
 > #### Try it ####
 >
-> After you've edited you've replaced the two rules with one pattern
-> rule, try removing all of the products and rerunning the pipeline.
+> After you've replaced the two rules with one pattern
+> rule, try removing all of the products (`make clean`)
+> and rerunning the pipeline.
 >
 > Is anything different now that you're using the pattern rule?
+>
+> If everything still works, commit your changes to _git_.
 
 > #### Practice ####
 >
