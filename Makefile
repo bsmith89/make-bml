@@ -8,7 +8,7 @@ PANDOC_OPTS_GENERAL = --from markdown --smart --highlight-style pygments \
         --css main.css $^ -o $@
 
 
-CLEANUP = README.html
+CLEANUP = README.html make-lesson.html
 
 clean:
 	rm -f ${CLEANUP}
