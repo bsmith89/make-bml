@@ -173,7 +173,7 @@ nano plotcount.py
 # with:
 #    width = 0.8
 git add plotcount.py
-git commit -m "Fix the figure legend."
+git commit -m "Fix the bar width."
 ```
 
 Now we want to recreate our figures.
