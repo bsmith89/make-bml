@@ -111,6 +111,7 @@ Together these scripts implement a common workflow:
 4.  Plot a graph of the analysis results.
 5.  Save the graph as an image, so we can put it in a paper.
 
+
 ## Writing a "master" script ##
 
 Running this pipeline for one book is pretty easy using the command-line.
@@ -306,7 +307,7 @@ rm *.words.tsv *.words.png
 make isles.words.tsv
 ```
 
-> ### Aside ###
+> #### Aside ####
 >
 > Notice that we didn't tell _Make_ to use `Makefile`.
 > When you run `make`, the program automatically looks in several places
@@ -374,6 +375,7 @@ The flag can be abbreviated as `-n`.
 If you don't pass a target as an argument to make (i.e. just run `make`)
 it will assume that you want to build the first target in the Makefile.
 
+
 ## More recipes ##
 
 Now that _Make_ knows how to build `isles.words.tsv`,
@@ -411,16 +413,16 @@ Just like many other languages,
 in makefiles "`\`" is a line-continuation character.
 Think of that recipe as a single line without the backslash.
 
-> ### Question ###
+> #### Question ####
 > Without doing it, what happens if you run `make isles.words.png`?
 
-> ### Challenge ###
+> #### Challenge ####
 > What does the dependency graph look like for your Makefile?
 
-> ### Try it ###
+> #### Try it ####
 > What happens if you run `make zipf_results.tgz` right now?
 
-> ### Practice ###
+> #### Practice ####
 > Write a recipe for `abyss.words.png`.
 
 Once you've written a recipe for `abyss.words.png` you should be able to
@@ -453,7 +455,7 @@ Since none of those existed it remade the ones it could,
 Once those were finished it was able to make `abyss.words.png` and
 `isles.words.png`, before finally building `zipf_results.tgz`.
 
-> ### Try it ###
+> #### Try it ####
 > What happens if you `touch abyss.words.tsv` and
 > then `make zipf_results.tgz`?
 
@@ -507,7 +509,7 @@ Running `make clean` will now remove all of the cruft.
 
 Watch out, though!
 
-> ### Try it ###
+> #### Try it ####
 >
 > What happens if you create a file named `clean` (i.e. `touch clean`)
 > and then run `make clean`?
@@ -586,6 +588,7 @@ In addition, a makefile explicitly documents the inputs to and outputs
 from every step in the analysis.
 These are like informal "USAGE:" documentation for our scripts.
 
+
 ## Parallel _Make_ ##
 
 And check this out!
@@ -604,6 +607,7 @@ Likewise for `abyss.words.png` and `isles.words.png`.
 If you've got a bunch of independent branches in your analysis, this can
 greatly speed up your build process.
 
+
 ## D.R.Y. (Don't Repeat Yourself) ##
 
 In many programming language, the bulk of the language features are there
@@ -618,6 +622,7 @@ principle.
 In _Make_ a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle.
 Turns out that _Make_ is perfectly capable of solving these problems.
+
 
 ## Automatic variables ##
 
@@ -672,11 +677,12 @@ Internally, _Make_ replaced "`$@`" with "`isles.words.tsv`"
 and "`$^`" with "`books/isles.txt`"
 before running the recipe.
 
-> ### Practice ###
+> #### Practice ####
 >
 > Go ahead and rewrite all of the rules in your Makefile to minimize
 > repetition and take advantage of these automatic variables.
 > Don't forget to commit your work.
+
 
 ## Pattern rules ##
 
@@ -713,19 +719,19 @@ We can replace _both_ of the rules which matched this pattern
 (`abyss.words.tsv` and `isles.words.tsv`) with just one rule.
 Go ahead and do that in your Makefile.
 
-> ### Try it ###
+> #### Try it ####
 >
 > After you've edited you've replaced the two rules with one pattern
 > rule, try removing all of the products and rerunning the pipeline.
 >
 > Is anything different now that you're using the pattern rule?
 
-> ### Practice ###
+> #### Practice ####
 >
 > Replace the recipes for `abyss.words.png` and `isles.words.png`
 > with a single pattern rule.
 
-> ### Challenge ###
+> #### Challenge ####
 >
 > Add `books/sierra.txt` to your pipeline.
 >
