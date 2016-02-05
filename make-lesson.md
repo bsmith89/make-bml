@@ -804,3 +804,71 @@ clean:
 > Try running `clean` and then `all`.
 >
 > Does everything still work?
+
+
+# Best practices for _Make_-based projects [60 minutes] #
+
+A Makefile can be an important part of a reproducible research pipeline.
+Have you noticed how simple it is now to add/remove books from our analysis?
+Just add or remove those files from the definition of `ARCHIVED` or
+the prerequisites for the `all` target!
+With the master script `run_pipeline.sh`,
+adding a third book required either more complicated
+or less transparent changes.
+
+
+## What's a prerequisite? ##
+
+We've talked a lot about the power of _Make_ for
+rebuilding research outputs when input data changes.
+When doing novel data analysis, however, it's very common for our _scripts_ to
+be as or _more_ dynamic than the data.
+
+What happens when we edit our scripts instead of changing our data?
+
+> #### Try it ####
+>
+> First, run `make all` so your analysis is up-to-date.
+>
+> Let's change the default number of entries in the rank/frequency
+> plot from 10 to 5.
+>
+> (Hint: edit the function definition for `plot_word_counts` in
+> `plotcounts.py` to read `limit=5`.)
+>
+> Now run `make all` again.  What happened?
+
+As it stands, we have to run `make clean` followed by `make all`
+to update our analysis with the new script.
+We're missing out on the benefits of incremental analysis when our scripts
+are changing too.
+
+There must be a better way...and there is!  Scripts should be prerequisites too.
+
+Let's edit the pattern rule for `%.words.png` to include `plotcounts.py`
+as a prerequisites.
+
+```makefile
+%.words.png: plotcounts.py %.words.tsv
+	$^ $@
+```
+
+The header makes sense, but that's a strange looking recipe:
+just two automatic variables.
+
+This recipe works because "`$^`" is replaced with all of the prerequisites.
+_In order_.
+When building `abyss.words.png`, for instance, it is replaced with
+`plotcounts.py abyss.words.tsv`, which is actually exactly what we want.
+
+> #### Try it ####
+>
+> What happens when you run the pipeline after modifying your script now?
+>
+> (This can be simulated with `touch plotcounts.py`.)
+
+> #### Practice ####
+>
+> Update your other rules to include the relevant scripts as prerequisites.
+>
+> Commit your changes.
