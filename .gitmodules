@@ -1,0 +1,3 @@
+[submodule "make-example"]
+	path = make-example
+	url = ./make-example/

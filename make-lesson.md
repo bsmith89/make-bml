@@ -91,13 +91,19 @@ head -5 abyss.dat
 Finally, let's visualize the results.
 
 ```bash
-./plotcount.py --ascii isles.dat
+./plotcount.py isles.dat ascii
 ```
 
-The `--ascii` flag has been added so that we get a text-based
+The `ascii` argument has been added so that we get a text-based
 bar-plot printed to the screen.
 
-The script is also able to plot a graphical bar-plot using matplotlib.
+The script is also able to display a graphical bar-plot using matplotlib.
+
+```bash
+./plotcount.py isles.dat show
+```
+
+Or it can save the figure as a file.
 
 ```bash
 ./plotcount.py isles.dat isles.png
