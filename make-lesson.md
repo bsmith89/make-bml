@@ -58,13 +58,13 @@ analysis pipeline.
 The first step is to count the frequency of each word in the book.
 
 ```bash
-./wordcount.py books/isles.txt isles.words.tsv
+./wordcount.py books/isles.txt isles.dat
 ```
 
 Let's take a quick peek at the result.
 
 ```bash
-head -5 isles.words.tsv
+head -5 isles.dat
 ```
 
 Which shows us the top 5 lines in the output file:
@@ -84,14 +84,14 @@ number of words in the text file.
 We can do the same thing for a different book:
 
 ```bash
-./wordcount.py books/abyss.txt abyss.words.tsv
-head -5 abyss.words.tsv
+./wordcount.py books/abyss.txt abyss.dat
+head -5 abyss.dat
 ```
 
 Finally, let's visualize the results.
 
 ```bash
-./plotcount.py --ascii isles.words.tsv
+./plotcount.py --ascii isles.dat
 ```
 
 The `--ascii` flag has been added so that we get a text-based
@@ -100,7 +100,7 @@ bar-plot printed to the screen.
 The script is also able to plot a graphical bar-plot using matplotlib.
 
 ```bash
-./plotcount.py isles.words.tsv isles.words.png
+./plotcount.py isles.dat isles.png
 ```
 
 Together these scripts implement a common workflow:
@@ -130,15 +130,15 @@ We can make a new file, `run_pipeline.sh` which contains:
 # USAGE: bash run_pipeline.sh
 # to produce plots for isles and abyss.
 
-./wordcount.py isles.txt isles.words.tsv
-./wordcount.py abyss.txt abyss.words.tsv
+./wordcount.py isles.txt isles.dat
+./wordcount.py abyss.txt abyss.dat
 
-./plotcount.py isles.words.tsv isles.words.png
-./plotcount.py abyss.words.tsv abyss.words.png
+./plotcount.py isles.dat isles.png
+./plotcount.py abyss.dat abyss.png
 
 # Now archive the results in a tarball so we can share them with a colleague.
-tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-    isles.words.png abyss.words.png
+tar -czf zipf_results.tgz isles.dat abyss.dat \
+    isles.png abyss.png
 ```
 
 This master script solved several problems in computational reproducibility:
@@ -187,12 +187,12 @@ Alternatively, we could manually rerun the plotting for each word-count file
 and recreate the tarball.
 
 ```bash
-for file in *.words.tsv; do
-    ./plotcount.py $file ${file/.tsv/.png}
+for file in *.dat; do
+    ./plotcount.py $file ${file/.dat/.png}
 done
 
-tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-    isles.words.png abyss.words.png
+tar -czf zipf_results.tgz isles.dat abyss.dat \
+    isles.png abyss.png
 ```
 
 But then we don't get many of the benefits of having a master script in
@@ -207,15 +207,15 @@ Another popular option is to comment out a subset of the lines in
 # to produce plots for isles and abyss.
 
 # These lines are commented out because they don't need to be rerun.
-#./wordcount.py isles.txt isles.words.tsv
-#./wordcount.py abyss.txt abyss.words.tsv
+#./wordcount.py isles.txt isles.dat
+#./wordcount.py abyss.txt abyss.dat
 
-./plotcount.py isles.words.tsv isles.words.png
-./plotcount.py abyss.words.tsv abyss.words.png
+./plotcount.py isles.dat isles.png
+./plotcount.py abyss.dat abyss.png
 
 # Now archive the results in a tarball so we can share them with a colleague.
-tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-    isles.words.png abyss.words.png
+tar -czf zipf_results.tgz isles.dat abyss.dat \
+    isles.png abyss.png
 ```
 
 Followed by `bash run_pipeline.sh`.
@@ -257,8 +257,8 @@ Open up a file called `Makefile` in your editor of choice (e.g. `nano Makefile`)
 and add the following:
 
 ```makefile
-isles.words.tsv: books/isles.txt
-	./wordcount.py books/isles.txt isles.words.tsv
+isles.dat: books/isles.txt
+	./wordcount.py books/isles.txt isles.dat
 ```
 
 We have now written the simplest, non-trivial Makefile.
@@ -286,14 +286,14 @@ This is no coincidence; _Make_ recipes _are_ shell scripts.
 The first line (_target_: _prerequisites_) explicitly declares two details
 that were implicit in our pipeline script:
 
-1.  We are generating a file called `isles.words.tsv`
+1.  We are generating a file called `isles.dat`
 2.  Creating this file requires `books/isles.txt`
 
 We'll think about our pipeline as a network of files which are dependent
 on one another.
 Right now our Makefile describes a pretty simple **dependency graph**.
 
-> `books/isles.txt` &#8594; `isles.words.tsv`
+> `books/isles.txt` &#8594; `isles.dat`
 
 where the "&#8594;" is pointing from requirements to targets.
 
@@ -312,11 +312,11 @@ let's use _Make_ to execute it.
 First, remove the previously generated files.
 
 ```bash
-rm *.words.tsv *.words.png
+rm *.dat *.png
 ```
 
 ```bash
-make isles.words.tsv
+make isles.dat
 ```
 
 > #### Aside ####
@@ -330,7 +330,7 @@ make isles.words.tsv
 You should see the following print to the terminal:
 
 ```
-./wordcount.py books/isles.txt isles.words.tsv
+./wordcount.py books/isles.txt isles.dat
 ```
 
 By default, _Make_ prints the recipes that it executes.
@@ -338,7 +338,7 @@ By default, _Make_ prints the recipes that it executes.
 Let's see if we got what we expected.
 
 ```bash
-head -5 isles.words.tsv
+head -5 isles.dat
 ```
 
 The first 5 lines of that file should look exactly like before.
@@ -349,15 +349,15 @@ The first 5 lines of that file should look exactly like before.
 Let's try running _Make_ the same way again.
 
 ```bash
-make isles.words.tsv
+make isles.dat
 ```
 
 This time, instead of executing the same recipe,
-_Make_ prints `make: Nothing to be done for 'isles.words.tsv'.`
+_Make_ prints `make: Nothing to be done for 'isles.dat'.`
 
 What's happening here?
 
-When you ask _Make_ to make `isles.words.tsv` it first looks at
+When you ask _Make_ to make `isles.dat` it first looks at
 the modification time of that target.
 Next it looks at the modification time for the target's prerequisites.
 If the target is newer than the prerequisites _Make_ decides that
@@ -369,18 +369,18 @@ This can be another _Make_ gotcha, so keep it in mind.
 
 If you want to induce the original behavior, you just have to
 change the modification time of `books/isles.txt` so that it is newer
-than `isles.words.tsv`.
+than `isles.dat`.
 
 ```bash
 touch books/isles.txt
-make isles.words.tsv
+make isles.dat
 ```
 
 The original behavior is restored.
 
 Sometimes you just want _Make_ to tell you what it thinks about the current
 state of your files.
-`make --dry-run isles.words.tsv` will print _Make_'s execution plan, without
+`make --dry-run isles.dat` will print _Make_'s execution plan, without
 actually carrying it out.
 The flag can be abbreviated as `-n`.
 
@@ -390,27 +390,27 @@ it will assume that you want to build the first target in the Makefile.
 
 ## More recipes ##
 
-Now that _Make_ knows how to build `isles.words.tsv`,
+Now that _Make_ knows how to build `isles.dat`,
 we can add a rule for plotting those results.
 
 ```makefile
-isles.words.png: isles.words.tsv
-	./plotcount.py isles.words.tsv isles.words.png
+isles.png: isles.dat
+	./plotcount.py isles.dat isles.png
 ```
 
 The dependency graph now looks like:
 
-> `books/isles.txt` &#8594; `isles.words.tsv` &#8594; `isles.words.png`
+> `books/isles.txt` &#8594; `isles.dat` &#8594; `isles.png`
 
 Let's add a few more recipes to our Makefile.
 
 ```makefile
-abyss.words.tsv: books/abyss.txt
-	./wordcount.py books/abyss.txt abyss.words.tsv
+abyss.dat: books/abyss.txt
+	./wordcount.py books/abyss.txt abyss.dat
 
-zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
-	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-        isles.words.png abyss.words.png
+zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
+	tar -czf zipf_results.tgz isles.dat abyss.dat \
+        isles.png abyss.png
 ```
 
 And commit the changes.
@@ -426,7 +426,7 @@ in makefiles "`\`" is a line-continuation character.
 Think of that recipe as a single line without the backslash.
 
 > #### Question ####
-> Without doing it, what happens if you run `make isles.words.png`?
+> Without doing it, what happens if you run `make isles.png`?
 
 > #### Challenge ####
 > What does the dependency graph look like for your Makefile?
@@ -435,9 +435,9 @@ Think of that recipe as a single line without the backslash.
 > What happens if you run `make zipf_results.tgz` right now?
 
 > #### Practice ####
-> Write a recipe for `abyss.words.png`.
+> Write a recipe for `abyss.png`.
 
-Once you've written a recipe for `abyss.words.png` you should be able to
+Once you've written a recipe for `abyss.png` you should be able to
 run `make zipf_results.tgz`.
 
 Let's delete all of our files and try it out.
@@ -452,23 +452,23 @@ You should get the something like the following output
 to your terminal:
 
 ```
-./wordcount.py books/abyss.txt abyss.words.tsv
-./wordcount.py books/isles.txt isles.words.tsv
-./plotcount.py abyss.words.tsv abyss.words.png
-./plotcount.py isles.words.tsv isles.words.png
-tar -czf zipf_results.tgz isles.words.tsv \
-        abyss.words.tsv isles.words.png abyss.words.png
+./wordcount.py books/abyss.txt abyss.dat
+./wordcount.py books/isles.txt isles.dat
+./plotcount.py abyss.dat abyss.png
+./plotcount.py isles.dat isles.png
+tar -czf zipf_results.tgz isles.dat \
+        abyss.dat isles.png abyss.png
 ```
 
 Since you asked for `zipf_results.tgz` _Make_ looked first for that file.
 Not finding it, _Make_ looked for its prerequisites.
 Since none of those existed it remade the ones it could,
-`abyss.words.tsv` and `isles.words.tsv`.
-Once those were finished it was able to make `abyss.words.png` and
-`isles.words.png`, before finally building `zipf_results.tgz`.
+`abyss.dat` and `isles.dat`.
+Once those were finished it was able to make `abyss.png` and
+`isles.png`, before finally building `zipf_results.tgz`.
 
 > #### Try it ####
-> What happens if you `touch abyss.words.tsv` and
+> What happens if you `touch abyss.dat` and
 > then `make zipf_results.tgz`?
 
 ```bash
@@ -482,8 +482,8 @@ care about.
 Add a `.gitignore` file:
 
 ```
-*.words.tsv
-*.words.png
+*.dat
+*.png
 zipf_results.tgz
 LICENSE.md
 ```
@@ -500,7 +500,7 @@ git status
 Sometimes its nice to have targets which don't refer to actual files.
 
 ```makefile
-all: isles.words.png abyss.words.png zipf_results.tgz
+all: isles.png abyss.png zipf_results.tgz
 ```
 
 Even though this rule doesn't have a recipe, it does have prerequisites.
@@ -516,7 +516,7 @@ Add the following to your Makefile.
 
 ```makefile
 clean:
-	rm --force *.words.tsv *.words.png zipf_results.tgz
+	rm --force *.dat *.png zipf_results.tgz
 ```
 
 Running `make clean` will now remove all of the cruft.
@@ -557,30 +557,30 @@ Right now our Makefile looks like this:
 
 ```makefile
 # Dummy targets
-all: isles.words.png abyss.words.png zipf_results.tgz
+all: isles.png abyss.png zipf_results.tgz
 
 clean:
-	rm --force *.words.tsv *.words.png zipf_results.tgz
+	rm --force *.dat *.png zipf_results.tgz
 
 .PHONY: all clean
 
 # Analysis and plotting
-isles.words.tsv: books/isles.txt
-	./wordcount.py books/isles.txt isles.words.tsv
+isles.dat: books/isles.txt
+	./wordcount.py books/isles.txt isles.dat
 
-isles.words.png: isles.words.tsv
-	./plotcount.py isles.words.tsv isles.words.png
+isles.png: isles.dat
+	./plotcount.py isles.dat isles.png
 
-abyss.words.tsv: books/abyss.txt
-	./wordcount.py books/abyss.txt abyss.words.tsv
+abyss.dat: books/abyss.txt
+	./wordcount.py books/abyss.txt abyss.dat
 
-abyss.words.png: abyss.words.png
-	./plotcount.py abyss.words.tsv abyss.words.png
+abyss.png: abyss.png
+	./plotcount.py abyss.dat abyss.png
 
 # Archive for sharing
-zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
-	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-        isles.words.png abyss.words.png
+zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
+	tar -czf zipf_results.tgz isles.dat abyss.dat \
+        isles.png abyss.png
 ```
 
 Look's good, don't you think?
@@ -615,9 +615,9 @@ make --jobs
 Did you see it?
 The `--jobs` flag (just `-j` works too) tells _Make_ to run recipes in _parallel_.
 Our dependency graph clearly shows that
-`abyss.words.tsv` and `isles.words.tsv` are mutually independent and can
+`abyss.dat` and `isles.dat` are mutually independent and can
 both be built at the same time.
-Likewise for `abyss.words.png` and `isles.words.png`.
+Likewise for `abyss.png` and `isles.png`.
 If you've got a bunch of independent branches in your analysis, this can
 greatly speed up your build process.
 
@@ -646,19 +646,19 @@ Targets and prerequisites are in both the header _and_ the recipe of each rule.
 It turns out, that
 
 ```makefile
-isles.words.tsv: books/isles.txt
-	./wordcount.py books/isles.txt isles.words.tsv
+isles.dat: books/isles.txt
+	./wordcount.py books/isles.txt isles.dat
 ```
 
 can be rewritten as
 
 ```makefile
-isles.words.tsv: books/isles.txt
+isles.dat: books/isles.txt
 	./wordcount.py $^ $@
 ```
 
 Here we've replaced the prerequisite "`books/isles.txt`" in the recipe
-with "`$^`" and the target "`isles.words.tsv`" with "`$@`".
+with "`$^`" and the target "`isles.dat`" with "`$@`".
 Both "`$^`" and "`$@`" are variables which refer to all of the prerequisites and
 target of a rule, respectively.
 In _Make_, variables are referenced with a leading dollar sign symbol.
@@ -666,15 +666,15 @@ While we can also define our own variables,
 _Make_ _automatically_ defines a number of variables, including each of these.
 
 ```makefile
-zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
-	tar -czf zipf_results.tgz isles.words.tsv abyss.words.tsv \
-        isles.words.png abyss.words.png
+zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
+	tar -czf zipf_results.tgz isles.dat abyss.dat \
+        isles.png abyss.png
 ```
 
 can now be rewritten as
 
 ```makefile
-zipf_results.tgz: isles.words.tsv abyss.words.tsv isles.words.png abyss.words.png
+zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
 	tar -czf $@ $^
 ```
 
@@ -685,12 +685,12 @@ and still perfectly understandable once you know what the variables mean.
 >
 > ```bash
 > make clean
-> make isles.words.tsv
+> make isles.dat
 > ``````````
 <!--Those extra backticks are because of Vim syntax highlighting.-->
 
 You should get the same output as last time.
-Internally, _Make_ replaced "`$@`" with "`isles.words.tsv`"
+Internally, _Make_ replaced "`$@`" with "`isles.dat`"
 and "`$^`" with "`books/isles.txt`"
 before running the recipe.
 
@@ -704,7 +704,7 @@ before running the recipe.
 ## Pattern rules ##
 
 Another deviation from D.R.Y.:
-We have nearly identical recipes for `abyss.words.tsv` and `isles.words.tsv`.
+We have nearly identical recipes for `abyss.dat` and `isles.dat`.
 
 It turns out we can replace _both_ of those rules with just one rule,
 by telling _Make_ about the relationships between filename _patterns_.
@@ -712,7 +712,7 @@ by telling _Make_ about the relationships between filename _patterns_.
 A "pattern rule" looks like this:
 
 ```makefile
-%.words.tsv: books/%.txt
+%.dat: books/%.txt
 	countwords.py $^ $@
 ```
 
@@ -725,7 +725,7 @@ wherever there's a "`%`".
 
 This rule can be interpretted as:
 
-> In order to build a file named `[something].words.tsv` (the target)
+> In order to build a file named `[something].dat` (the target)
 > find a file named `books/[that same something].txt` (the prerequisite)
 > and run `countwords.py [the prerequisite] [the target]`.
 
@@ -733,7 +733,7 @@ Notice how helpful the automatic variables are here.
 This recipe will work no matter what stem is being matched!
 
 We can replace _both_ of the rules which matched this pattern
-(`abyss.words.tsv` and `isles.words.tsv`) with just one rule.
+(`abyss.dat` and `isles.dat`) with just one rule.
 Go ahead and do that in your Makefile.
 
 > #### Try it ####
@@ -748,7 +748,7 @@ Go ahead and do that in your Makefile.
 
 > #### Practice ####
 >
-> Replace the recipes for `abyss.words.png` and `isles.words.png`
+> Replace the recipes for `abyss.png` and `isles.png`
 > with a single pattern rule.
 
 > #### Challenge ####
@@ -769,9 +769,9 @@ Users can define their own, as well.
 Add this lines at the top of your makefile:
 
 ```makefile
-ARCHIVED := isles.words.tsv isles.words.png \
-            abyss.words.tsv abyss.words.png \
-            sierra.words.tsv sierra.words.png
+ARCHIVED := isles.dat isles.png \
+            abyss.dat abyss.png \
+            sierra.dat sierra.png
 ```
 
 The variable `ARCHIVED` is a list of the files that we want to include in our
@@ -853,11 +853,11 @@ are changing too.
 
 There must be a better way...and there is!  Scripts should be prerequisites too.
 
-Let's edit the pattern rule for `%.words.png` to include `plotcounts.py`
+Let's edit the pattern rule for `%.png` to include `plotcounts.py`
 as a prerequisites.
 
 ```makefile
-%.words.png: plotcounts.py %.words.tsv
+%.png: plotcounts.py %.dat
 	$^ $@
 ```
 
@@ -866,8 +866,8 @@ just two automatic variables.
 
 This recipe works because "`$^`" is replaced with all of the prerequisites.
 _In order_.
-When building `abyss.words.png`, for instance, it is replaced with
-`plotcounts.py abyss.words.tsv`, which is actually exactly what we want.
+When building `abyss.png`, for instance, it is replaced with
+`plotcounts.py abyss.dat`, which is actually exactly what we want.
 
 > #### Try it ####
 >
