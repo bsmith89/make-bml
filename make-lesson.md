@@ -11,12 +11,11 @@ author: Byron J. Smith
 For this lesson we will be using an already prepared set of files.
 
 ```bash
-curl -O http://swcarpentry.github.io/make-novice/make-lesson.zip
-unzip make-lesson.zip
-cd make-lesson
+curl https://codeload.github.com/bsmith89/make-example/zip/master \
+    > make-example-master.zip
+unzip make-example-master.zip
+cd make-example-master
 ```
-
-[Change these files?]
 
 Let's take a look at the files we will be working with:
 
