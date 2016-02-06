@@ -52,7 +52,7 @@ Let's imagine that instead of computational biology we're interested in
 testing Zipf's law in some of our favorite books.
 We've compiled our raw data, the books we want to analyze
 (check out `head books/isles.txt`)
-and have prepared several Python scripts which together make up our
+and have prepared several Python scripts that together make up our
 analysis pipeline.
 
 Before we begin, add a README to your project describing what we intend
@@ -75,7 +75,7 @@ Let's take a quick peek at the result.
 head -5 isles.dat
 ```
 
-Which shows us the top 5 lines in the output file:
+shows us the top 5 lines in the output file:
 
 ```
 the	3822	6.7371760973
@@ -135,9 +135,9 @@ Plus, no one wants to sit and wait for a command to finish, even just for 30
 seconds.
 
 The most common solution to the tedium of data processing is to write
-a master script which runs the whole pipeline from start to finish.
+a master script that runs the whole pipeline from start to finish.
 
-We can make a new file, `run_pipeline.sh` which contains:
+We can make a new file, `run_pipeline.sh` that contains:
 
 ```bash
 #!/usr/bin/env bash
@@ -308,7 +308,7 @@ that were implicit in our pipeline script:
 1.  We are generating a file called `isles.dat`
 2.  Creating this file requires `books/isles.txt`
 
-We'll think about our pipeline as a network of files which are dependent
+We'll think about our pipeline as a network of files that are dependent
 on one another.
 Right now our Makefile describes a pretty simple **dependency graph**.
 
@@ -517,7 +517,7 @@ git status
 
 ## Phony targets ##
 
-Sometimes its nice to have targets which don't refer to actual files.
+Sometimes its nice to have targets that don't refer to actual files.
 
 ```makefile
 all: isles.png abyss.png zipf_results.tgz
@@ -612,7 +612,7 @@ we were originally making either manually or using the master script,
 but with a few bonus features.
 
 Now, if we change one of the inputs, we don't have to rebuild everything.
-Instead, _Make_ knows to only rebuild the files which, either directly or
+Instead, _Make_ knows to only rebuild the files that, either directly or
 indirectly, depend on the file that changed.
 This is called an **incremental build**.
 It's no longer our job to track those dependencies.
@@ -679,7 +679,7 @@ isles.dat: books/isles.txt
 
 Here we've replaced the prerequisite "`books/isles.txt`" in the recipe
 with "`$^`" and the target "`isles.dat`" with "`$@`".
-Both "`$^`" and "`$@`" are variables which refer to all of the prerequisites and
+Both "`$^`" and "`$@`" are variables that refer to all of the prerequisites and
 target of a rule, respectively.
 In _Make_, variables are referenced with a leading dollar sign symbol.
 While we can also define our own variables,
@@ -752,7 +752,7 @@ This rule can be interpretted as:
 Notice how helpful the automatic variables are here.
 This recipe will work no matter what stem is being matched!
 
-We can replace _both_ of the rules which matched this pattern
+We can replace _both_ of the rules that matched this pattern
 (`abyss.dat` and `isles.dat`) with just one rule.
 Go ahead and do that in your Makefile.
 
@@ -911,7 +911,7 @@ Imagine how hard it would be to find your way around this analysis
 if you had more than three steps?
 Let's move some stuff around to make our project easier to navigate.
 
-### Scripts go in `scripts/` ###
+### Store scripts in `scripts/` ###
 
 First we'll stow away the scripts.
 
@@ -920,7 +920,7 @@ mkdir scripts/
 mv plotcounts.py wordcount.py scripts/
 ```
 
-Which means we also need to update our Makefile to reflect the change:
+We also need to update our Makefile to reflect the change:
 
 ```makefile
 %.dat: countwords.py books/%.txt
@@ -956,7 +956,7 @@ git commit -m "Move scripts into a subdirectory."
 Great!  From here on, when we add new scripts to our analysis they won't
 clutter up our project root.
 
-### Intermediate files go in `data/` ###
+### "Hide" intermediate files in `data/` ###
 
 Speaking of clutter, what are we gonna do about all of these intermediate files!?
 Put 'em in a subdirectory!
@@ -1009,7 +1009,7 @@ git add .gitignore
 Simple!
 
 
-### Research outputs go in `fig/` ###
+### Output finished products to `fig/` ###
 
 > #### Practice ####
 >
