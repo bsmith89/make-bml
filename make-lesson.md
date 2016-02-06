@@ -1113,6 +1113,87 @@ Now we can extend our pipeline with a variety of pre- and post-processing
 steps, give each of them a descriptive infix,
 and the names will be a self-documenting record of its origins.
 
+For reasons which will be explained in a minute, let's also make a dummy
+preprocessing step which will just copy the books verbatim into our
+`data/` directory.
+
+```makefile
+data/%.txt: books/%.txt
+	cp $^ $@
+```
+
+And, in the spirit of infixes, we'll rename `data/%.tsv` to be more descriptive.
+
+```makefile
+data/%.counts.tsv: scripts/wordcount.py data/%.txt
+	$^ $@
+
+fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
+    $^ $@
+```
+
+Here's the _full_ Makefile:
+
+> ```makefile
+> ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
+>         data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
+>         fig/abyss.lower.counts.png fig/sierra.lower.counts.png
+>
+> # Dummy targets
+> all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
+>         fig/sierra.lower.counts.png zipf_results.tgz
+>
+> clean:
+> 	rm --force data/* fig/*
+>
+> .PHONY: all clean
+>
+> # Analysis and plotting
+> data/%.txt: books/%.txt
+> 	cp $^ $@
+>
+> data/%.lower.txt: data/%.txt
+> 	tr '[:upper:]' '[:lower:]' < $^ > $@
+>
+> data/%.counts.tsv: scripts/wordcount.py data/%.txt
+> 	$^ $@
+>
+> fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
+> 	$^ $@
+>
+> # Archive for sharing
+> zipf_results.tgz: ${ARCHIVED}
+> 	tar -czf $@ $^
+> ``````````
+<!--Those extra backticks are because of Vim syntax highlighting.-->
+
+Our filenames are certainly more verbose now, but in exchange we get:
+
+1.  self-documenting filenames
+2.  more flexible development
+3.  and something else, too...
+
+```bash
+make clean
+make fig/abyss.lower.counts.png fig/abyss.counts.png
+```
+
+What happened there?
+We just built two different barplots, one for our analysis _with_ the
+preprocessing step and one _without_.
+Both from the same Makefile.
+By liberally applying pattern rules and infix filenames
+we get something like a "filename language".
+We describe the analyses we want to run and then have _Make_ figure out the
+details.
+
+We can make this a tiny bit easier
+
+> #### Practice ####
+>
+> Update your drawing of the dependency graph.
+
+
 -   What do we version control?
 -   Bootstrap your setup using _Make_
 -   Download your data using _Make_
