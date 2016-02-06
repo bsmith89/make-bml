@@ -1069,6 +1069,49 @@ clean:
 
 Be sure to commit all of your changes.
 
+### Infix processing hints ###
+
+One of our goals in implementing best practices for our analysis pipeline
+is to make it easy to change it without rewriting everything.
+Let's add a preprocessing step to our analysis that puts
+everything in lowercase before counting words.
+
+The program `tr` (short for "translate") is a Unix-style filter that swaps one
+set of characters for another.
+`tr '[:upper:]' '[:lower:]' < [input file] > [output file]`
+will read the mixedcase input file and write all lowercase to
+the output file.
+
+We can add this to our pipeline by first adding a rule.
+We know the recipe is going to look like this:
+
+```makefile
+tr '[:upper:]' '[:lower:]' < $^ > $@
+```
+
+> #### Challenge ####
+>
+> Rewrite your Makefile to update the pipeline with the preprocessing step.
+
+You probably decided to take the pattern `books/%.txt` as the prerequisite,
+but what did you opt to name the target?
+
+`data/%.txt` is an option, but that means we have two files named
+`[bookname].txt`, one in `books/` and one in `data/`.
+Probably not the easiest to differentiate.
+
+A better option is to use a more descriptive filename.
+
+```makefile
+data/%.lower.txt: books/%.txt
+	tr '[:upper:]' '[:lower:]' < $^ > $@
+```
+
+By including an **infix** of `.lower.` in our filename it's easy to
+see that one file is a lowercase version of the mixedcase original.
+Now we can extend our pipeline with a variety of pre- and post-processing
+steps, give each of them a descriptive infix,
+and the names will be a self-documenting record of its origins.
 
 -   Modular development
 -   Add unstable scripts to the prerequisites
