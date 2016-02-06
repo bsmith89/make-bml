@@ -1194,6 +1194,62 @@ We can make this a tiny bit easier
 > Update your drawing of the dependency graph.
 
 
+## Builtin Testing ##
+
+It's a Good Idea to check your analysis against some form of ground truth.
+The simplest version of this is a well-defined dataset that you can
+reason about independent of your code.
+Let's make just such a dataset.
+Let's write a book!
+
+Into a file called `books/test.txt` add something like this:
+
+```
+My Book
+By Me
+
+This is a book that I wrote.
+
+The END
+
+```
+
+We don't need software to count all of the words in this book, and
+we can probably imagine exactly what a barplot of the count would look like.
+If the actual result doesn't look like we expected,
+then there's probably something wrong with our analysis.
+Testing your scripts with this tiny book is computationally cheap, too.
+
+Let's try it out!
+
+```bash
+make fig/test.lower.counts.png
+less data/test.lower.counts.tsv
+```
+
+Does your counts data match what you expected?
+
+We should run this test for just about every change we make,
+to our scripts or to our Makefile.
+We're going to do that a _lot_ so we'll make it as easy as possible.
+
+```makefile
+test: fig/test.lower.counts.png
+
+.PHONY: test clean all
+```
+
+You could even add the `test` phony target as the first thing in your Makefile.
+That way just calling `make` will run your tests.
+
+> #### Practice ####
+>
+> Add a cleanup target called `testclean` which is specific for
+> the outputs of your test run.
+
+Commit your changes.
+
+
 -   What do we version control?
 -   Bootstrap your setup using _Make_
 -   Download your data using _Make_
