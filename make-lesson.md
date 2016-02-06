@@ -1023,7 +1023,51 @@ short and descriptive.
 > Does your pipeline still execute the way you expect?
 
 
-## Flexible, modular analyses ##
+## File naming ##
+
+### Use file extensions to indicate format ###
+
+Up to this point, we've been working with three types of data files,
+each with it's own file extension.
+
+-   '`.txt`' files: the original book in plain-text
+-   '`.dat`' files: word counts and percentages in a plain-text format
+-   '`.png`' files: PNG formatted barplots
+
+Using file extensions like these clearly indicates to anyone not familiar with
+your project what software to view each file with;
+you won't get much out of opening a PNG with a text editor.
+Whenever possible, use a widely used extension to make it easy for others
+to understand your data.
+
+File extensions also give us a handle for describing the flow of data in our
+pipeline.
+Pattern rules rely on this convention.
+Our makefile says that the raw, book data feeds into word count data
+which feeds into barplot data.
+
+But the current naming scheme has one obvious ambiguity:
+'`.dat`' isn't particularly descriptive.
+Lots of file formats can be described as "data", including binary formats
+that would require specialized software to view.
+For tab-delimited, tabular data (data in rows and columns),
+'`.tsv`' is a more precise convention.
+
+Updating our pipeline to use this extension is as simple as find-and-replace
+'`.dat`' to '`.tsv`' in our Makefile.
+If you're tired of `mv`-ing your files everytime you change your pipeline
+you can also `make clean` followed by `make all` to check that everything still
+works.
+
+You might want to update your "`clean`" recipe to remove all the junk
+like so:
+
+```makefile
+clean:
+	rm -f data/* fig/*
+```
+
+Be sure to commit all of your changes.
 
 
 -   Modular development
