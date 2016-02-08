@@ -1247,7 +1247,13 @@ That way just calling `make` will run your tests.
 > Add a cleanup target called `testclean` which is specific for
 > the outputs of your test run.
 
-Commit your changes.
+Commit your changes, including `books/test.txt`.
+
+```bash
+git add Makefile
+git add -f books/test.txt
+git commit -m "Add pipeline testing recipe and book."
+```
 
 
 -   What do we version control?
