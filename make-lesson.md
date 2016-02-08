@@ -1256,6 +1256,51 @@ git commit -m "Add pipeline testing recipe and book."
 ```
 
 
+## Review: version control ##
+
+We have been following three guiding principles in our use of version
+control during this lesson.
+
+1.  Use it (always).
+
+    Version control is a Good Idea and should be used for any files which
+    describe your pipeline.
+    This includes notes/documentation/TODOs, scripts, and the Makefiles
+    themselves.
+
+2.  Don't version control raw or processed data which can be recreated.
+
+    Raw data stays raw and data cleanup should be part of the pipeline.
+    Because of this, backing up your data is imperative, but version
+    control is not usually the best way to do so.
+    Consider adding a recipe which downloads raw data using
+    `wget` or `curl`.
+
+    One exception would be test or example data.
+    These should be version controlled, as they are subject to change
+    as testing is adapted to the evolving pipeline.
+
+    Metadata should also be version controlled, since the format and
+    composition of the metadata is intimately linked with the analysis pipeline
+    itself.
+
+3.  Aim to commit "atomic" changes to your pipeline.
+
+    This means you should usually run `make test` before committing
+    your changes so that regressions don't need to be fixed
+    in subsequent commits.
+    Co-dependent updates to metadata, documentation, and testing should
+    be included in the same commit.
+    In a perfect world, `make all` should work, and documentation
+    should be up to date, regardless of what revision has been checked out.
+    Excessive application of this principle is ill advised.
+
+    A more common problem are behemoth commits which make large numbers of
+    unrelated changes.
+    In general, a single sentence commit message should be able to summarize
+    all of the changes in a commit.
+
+
 -   What do we version control?
 -   Bootstrap your setup using _Make_
 -   Download your data using _Make_
