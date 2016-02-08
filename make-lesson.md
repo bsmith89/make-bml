@@ -182,7 +182,7 @@ I'll talk more about this later.
 
 A master script is a good start, but it has a few shortcomings.
 
-Let's imagine that we adjusted the width of the bars in our plot.
+Let's imagine that we adjusted the width of the bars in our plot
 produced by `plotcount.py`.
 
 ```bash
@@ -199,7 +199,7 @@ Now we want to recreate our figures.
 We _could_ just `bash run_pipeline.sh` again.
 That would work, but it could also be a big pain if counting words takes
 more than a few seconds.
-The the word counting routine hasn't changed; we shouldn't need to recreate
+The word counting routine hasn't changed; we shouldn't need to recreate
 those files.
 
 Alternatively, we could manually rerun the plotting for each word-count file
@@ -603,7 +603,7 @@ zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
         isles.png abyss.png
 ```
 
-Look's good, don't you think?
+Looks good, don't you think?
 Notice the added comments, starting with the "`#`" character just like in
 Python, R, shell, etc.
 
@@ -743,7 +743,7 @@ and matches any sequence of characters in the target.
 Whatever it matches is then filled in to the prerequisites
 wherever there's a "`%`".
 
-This rule can be interpretted as:
+This rule can be interpreted as:
 
 > In order to build a file named `[something].dat` (the target)
 > find a file named `books/[that same something].txt` (the prerequisite)
@@ -1055,7 +1055,7 @@ For tab-delimited, tabular data (data in rows and columns),
 
 Updating our pipeline to use this extension is as simple as find-and-replace
 '`.dat`' to '`.tsv`' in our Makefile.
-If you're tired of `mv`-ing your files everytime you change your pipeline
+If you're tired of `mv`-ing your files every time you change your pipeline
 you can also `make clean` followed by `make all` to check that everything still
 works.
 
@@ -1194,7 +1194,7 @@ We can make this a tiny bit easier
 > Update your drawing of the dependency graph.
 
 
-## Builtin Testing ##
+## Built-in Testing ##
 
 It's a Good Idea to check your analysis against some form of ground truth.
 The simplest version of this is a well-defined dataset that you can
