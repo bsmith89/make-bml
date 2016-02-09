@@ -6,14 +6,18 @@ author: Byron J. Smith
 
 # Setup [15 minutes] #
 
-[AWS?]
+This tutorial is designed to be run on Amazon EC2 using the
+Ubuntu Server 14.04 LTS image, although it should be trivial to port
+it for use on any other UNIX operating system.
+If you would like to use Windows, Git-Bash (packaged with Git for Windows)
+is probably your best bet, although it has not been tested on that platform.
 
 For this lesson we will be using an already prepared set of files.
 
 ```bash
-curl https://codeload.github.com/bsmith89/make-example/zip/master \
-    > make-example-master.zip
-unzip make-example-master.zip
+curl https://codeload.github.com/bsmith89/make-example/tar.gz/master \
+    > make-example-master.tgz
+tar -xzf make-example-master.tgz
 cd make-example-master
 ```
 
@@ -39,7 +43,12 @@ The `tree` command produces a handy tree-diagram of the directory.
 1 directory, 7 files
 ```
 
-[Do we have other requirements to install?]
+Be sure that you also have _Python 3_, _Git_, and _GNU Make_.
+
+```bash
+sudo apt-get update
+sudo apt-get python3 git gmake
+```
 
 
 # Motivation [30 minutes] #
