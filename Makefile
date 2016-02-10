@@ -15,9 +15,13 @@ CLEANUP = README.html make-lesson.html
 clean:
 	rm -rf ${CLEANUP} docs
 
-docs/index.md: ${LESSON}.md
-	mkdir -p ${@D}
-	cp $^ $@
+SITE_DIR=site/
 
-gh-pages: docs/index.md mkdocs.yml
-	mkdocs gh-deploy --clean
+${SITE_DIR}: ${LESSON}.html main.css
+	rm -rf $@
+	mkdir $@
+	cp $^ $@
+	cp $^ $@/index.html
+
+gh-pages: ${SITE_DIR}
+	ghp-import -b gh-pages -m "`date`" -p ${SITE_DIR}
