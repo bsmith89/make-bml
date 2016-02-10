@@ -6,10 +6,9 @@ author: Byron J. Smith
 
 # Setup [15 minutes] #
 
-This tutorial is designed to be run on Amazon EC2 using the
-Ubuntu Server 14.04 LTS image, although it should be trivial to port
-it for use on any other UNIX operating system.
-I've tested that everything works on an m3.medium instance.
+This tutorial was designed for UNIX systems and has been tested
+on Amazon EC2 using the
+Ubuntu Server 14.04 LTS image and a "m3.medium" instance.
 If you would like to use Windows, Git-Bash (packaged with Git for Windows)
 is probably your best bet, although it has not been tested on that platform.
 
