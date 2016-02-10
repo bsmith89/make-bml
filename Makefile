@@ -13,11 +13,11 @@ PANDOC_OPTS_GENERAL = --from markdown --smart --highlight-style pygments \
 CLEANUP = README.html make-lesson.html
 
 clean:
-	rm -f ${CLEANUP} docs
+	rm -rf ${CLEANUP} docs
 
 docs/index.md: ${LESSON}.md
 	mkdir -p ${@D}
 	cp $^ $@
 
-gh-pages: docs/index.md
+gh-pages: docs/index.md mkdocs.yml
 	mkdocs gh-deploy --clean
