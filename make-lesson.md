@@ -286,8 +286,6 @@ Followed by `bash run_pipeline.sh`.
 But this process, and subsequently undoing it,
 can be a hassle and source of errors in complicated pipelines.
 
-[Revise this part]
-
 What we really want is an executable _description_ of our pipeline that
 allows software to do the tricky part for us:
 figuring out what steps need to be rerun.
@@ -1258,8 +1256,6 @@ By liberally applying pattern rules and infix filenames
 we get something like a "filename language".
 We describe the analyses we want to run and then have _Make_ figure out the
 details.
-
-We can make this a tiny bit easier
 
 > #### Practice ####
 >
