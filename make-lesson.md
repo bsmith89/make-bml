@@ -160,8 +160,11 @@ We can make a new file, `run_pipeline.sh` that contains:
 ./plotcount.py abyss.dat abyss.png
 
 # Now archive the results in a tarball so we can share them with a colleague.
-tar -czf zipf_results.tgz isles.dat abyss.dat \
-    isles.png abyss.png
+rm -rf zipf_results
+mkdir zipf_results
+mv isles.dat abyss.dat isles.png abyss.png zipf_results/
+tar -czf zipf_results.tgz zipf_results
+rm -r zipf_results
 ```
 
 This master script solved several problems in computational reproducibility:
@@ -219,8 +222,11 @@ for file in *.dat; do
     ./plotcount.py $file ${file/.dat/.png}
 done
 
-tar -czf zipf_results.tgz isles.dat abyss.dat \
-    isles.png abyss.png
+rm -rf zipf_results
+mkdir zipf_results
+mv isles.dat abyss.dat isles.png abyss.png zipf_results/
+tar -czf zipf_results.tgz zipf_results
+rm -r zipf_results
 ```
 
 But then we don't get many of the benefits of having a master script in
@@ -242,8 +248,11 @@ Another popular option is to comment out a subset of the lines in
 ./plotcount.py abyss.dat abyss.png
 
 # Now archive the results in a tarball so we can share them with a colleague.
-tar -czf zipf_results.tgz isles.dat abyss.dat \
-    isles.png abyss.png
+rm -rf zipf_results
+mkdir zipf_results
+mv isles.dat abyss.dat isles.png abyss.png zipf_results/
+tar -czf zipf_results.tgz zipf_results
+rm -r zipf_results
 ```
 
 Followed by `bash run_pipeline.sh`.
@@ -437,8 +446,11 @@ abyss.dat: books/abyss.txt
 	./wordcount.py books/abyss.txt abyss.dat
 
 zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
-	tar -czf zipf_results.tgz isles.dat abyss.dat \
-        isles.png abyss.png
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp isles.dat abyss.dat isles.png abyss.png zipf_results/
+	tar -czf zipf_results.tgz zipf_results/
+	rm -r zipf_results/
 ```
 
 And commit the changes.
@@ -448,10 +460,10 @@ git add Makefile
 git commit -m "Add recipes for abyss counts, isles plotting, and the final archive."
 ```
 
-Notice the backslash in the recipe for `zipf_results.tgz`.
-Just like many other languages,
-in makefiles "`\`" is a line-continuation character.
-Think of that recipe as a single line without the backslash.
+Here the recipe for `zipf_results.tgz` involves running a series of
+shell commands.
+When building the archive, _Make_ will run each line successively unless
+any return an error.
 
 > #### Question ####
 > Without doing it, what happens if you run `make isles.png`?
@@ -484,8 +496,11 @@ to your terminal:
 ./wordcount.py books/isles.txt isles.dat
 ./plotcount.py abyss.dat abyss.png
 ./plotcount.py isles.dat isles.png
-tar -czf zipf_results.tgz isles.dat \
-        abyss.dat isles.png abyss.png
+rm -rf zipf_results/
+mkdir zipf_results/
+cp isles.dat abyss.dat isles.png abyss.png zipf_results/
+tar -czf zipf_results.tgz zipf_results/
+rm -r zipf_results/
 ```
 
 Since you asked for `zipf_results.tgz` _Make_ looked first for that file.
@@ -608,8 +623,11 @@ abyss.png: abyss.png
 
 # Archive for sharing
 zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
-	tar -czf zipf_results.tgz isles.dat abyss.dat \
-        isles.png abyss.png
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp isles.dat abyss.dat isles.png abyss.png zipf_results/
+	tar -czf zipf_results.tgz zipf_results/
+	rm -r zipf_results/
 ```
 
 Looks good, don't you think?
@@ -696,15 +714,22 @@ _Make_ _automatically_ defines a number of variables, including each of these.
 
 ```makefile
 zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
-	tar -czf zipf_results.tgz isles.dat abyss.dat \
-        isles.png abyss.png
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp isles.dat abyss.dat isles.png abyss.png zipf_results/
+	tar -czf zipf_results.tgz zipf_results/
+	rm -r zipf_results/
 ```
 
 can now be rewritten as
 
 ```makefile
 zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
-	tar -czf $@ $^
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp $^ zipf_results/
+	tar -czf $@ zipf_results/
+	rm -r zipf_results/
 ```
 
 Phew!  That's much less cluttered,
@@ -803,6 +828,10 @@ ARCHIVED := isles.dat isles.png \
             sierra.dat sierra.png
 ```
 
+Just like many other languages,
+in makefiles "`\`" is a line-continuation character.
+Think of this variable definition as a single line without the backslash.
+
 The variable `ARCHIVED` is a list of the files that we want to include in our
 tarball.
 Now wherever we write `${ARCHIVED}` it will be replaced with that list of files.
@@ -826,10 +855,14 @@ That rule would now be:
 
 ```makefile
 zipf_results.tgz: ${ARCHIVED}
-	tar -czf $@ $^
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp $^ zipf_results/
+	tar -czf $@ zipf_results/
+	rm -r zipf_results/
 ```
 
-We can also use `${OBJECTS}` to simplify our cleanup rule.
+We can also use `${ARCHIVED}` to simplify our cleanup rule.
 
 ```makefile
 clean:
@@ -1145,8 +1178,8 @@ Here's the _full_ Makefile:
 
 > ```makefile
 > ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
->         data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
->         fig/abyss.lower.counts.png fig/sierra.lower.counts.png
+>             data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
+>             fig/abyss.lower.counts.png fig/sierra.lower.counts.png
 >
 > # Dummy targets
 > all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
@@ -1172,7 +1205,11 @@ Here's the _full_ Makefile:
 >
 > # Archive for sharing
 > zipf_results.tgz: ${ARCHIVED}
-> 	tar -czf $@ $^
+> 	rm -rf zipf_results/
+> 	mkdir zipf_results/
+> 	cp $^ zipf_results/
+> 	tar -czf $@ zipf_results/
+> 	rm -r zipf_results/
 > ``````````
 <!--Those extra backticks are because of Vim syntax highlighting.-->
 
