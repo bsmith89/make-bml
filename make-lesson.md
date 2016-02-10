@@ -9,6 +9,7 @@ author: Byron J. Smith
 This tutorial is designed to be run on Amazon EC2 using the
 Ubuntu Server 14.04 LTS image, although it should be trivial to port
 it for use on any other UNIX operating system.
+I've tested that everything works on an m3.medium instance.
 If you would like to use Windows, Git-Bash (packaged with Git for Windows)
 is probably your best bet, although it has not been tested on that platform.
 
@@ -24,6 +25,8 @@ cd make-example-master
 Let's take a look at the files we will be working with:
 
 ```bash
+sudo apt-get update
+sudo apt-get install tree
 tree
 ```
 
@@ -32,12 +35,15 @@ The `tree` command produces a handy tree-diagram of the directory.
 ```
 .
 ├── books
-│   ├── LICENSE_TEXTS.md
-│   ├── abyss.txt
-│   ├── isles.txt
-│   ├── last.txt
-│   └── sierra.txt
+│   ├── abyss.txt
+│   ├── isles.txt
+│   ├── last.txt
+│   ├── LICENSE_TEXTS.md
+│   └── sierra.txt
+├── LICENSE.md
+├── matplotlibrc
 ├── plotcount.py
+├── README.md
 └── wordcount.py
 
 1 directory, 7 files
@@ -46,8 +52,28 @@ The `tree` command produces a handy tree-diagram of the directory.
 Be sure that you also have _Python 3_, _Git_, and _GNU Make_.
 
 ```bash
-sudo apt-get update
-sudo apt-get python3 git gmake
+sudo apt-get install git make
+```
+
+Configure git.
+
+```bash
+git config --global user.name "Your Name"
+git config --global user.email you@example.com
+```
+
+Install matplotlib.
+
+
+```bash
+sudo apt-get install python3-matplotlib
+```
+
+And, finally, load up your favorite terminal multi-plexer so we can recover if
+we get disconnected.
+
+```bash
+tmux
 ```
 
 
@@ -183,7 +209,7 @@ To continue with the Good Ideas, let's put everything under version control.
 git init
 git add README.md
 git commit -m "Starting a new project."
-git add wordcount.py plotcount.py
+git add wordcount.py plotcount.py matplotlibrc
 git commit -m "Write scripts to test Zipf's law."
 git add run_pipeline.sh
 git commit -m "Write a master script to run the pipeline."
