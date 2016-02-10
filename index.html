@@ -71,7 +71,7 @@
                 </li>
                 
                 <li>
-                    <a href="https://github.com/bsmith89/make-lesson">
+                    <a href="https://github.com/bsmith89/make-bml">
                         
                             <i class="fa fa-github"></i>
                         
@@ -129,17 +129,6 @@
             <li><a href="#directory-structure">Directory structure</a></li>
         
             <li><a href="#file-naming">File naming</a></li>
-        
-    
-        <li class="main "><a href="#dummy-targets">Dummy targets</a></li>
-        
-    
-        <li class="main "><a href="#analysis-and-plotting">Analysis and plotting</a></li>
-        
-    
-        <li class="main "><a href="#archive-for-sharing">Archive for sharing</a></li>
-        
-            <li><a href="#practice_5">Practice</a></li>
         
             <li><a href="#built-in-testing">Built-in Testing</a></li>
         
@@ -1081,36 +1070,41 @@ fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
 </code></pre>
 
 <p>Here's the <em>full</em> Makefile:</p>
-<blockquote>
-<p>```makefile
-ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
+<pre><code class="makefile">ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
             data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
-            fig/abyss.lower.counts.png fig/sierra.lower.counts.png</p>
-<h1 id="dummy-targets">Dummy targets</h1>
-<p>all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
-        fig/sierra.lower.counts.png zipf_results.tgz</p>
-<p>clean:
-  rm --force data/<em> fig/</em></p>
-<p>.PHONY: all clean</p>
-<h1 id="analysis-and-plotting">Analysis and plotting</h1>
-<p>data/%.txt: books/%.txt
-  cp $^ $@</p>
-<p>data/%.lower.txt: data/%.txt
-  tr '[:upper:]' '[:lower:]' &lt; $^ &gt; $@</p>
-<p>data/%.counts.tsv: scripts/wordcount.py data/%.txt
-  $^ $@</p>
-<p>fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
-  $^ $@</p>
-<h1 id="archive-for-sharing">Archive for sharing</h1>
-<p>zipf_results.tgz: ${ARCHIVED}
-  rm -rf zipf_results/
-  mkdir zipf_results/
-  cp $^ zipf_results/
-  tar -czf $@ zipf_results/
-  rm -r zipf_results/
-``````````
-<!--Those extra backticks are because of Vim syntax highlighting.--></p>
-</blockquote>
+            fig/abyss.lower.counts.png fig/sierra.lower.counts.png
+
+# Dummy targets
+all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
+        fig/sierra.lower.counts.png zipf_results.tgz
+
+clean:
+    rm --force data/* fig/*
+
+.PHONY: all clean
+
+# Analysis and plotting
+data/%.txt: books/%.txt
+    cp $^ $@
+
+data/%.lower.txt: data/%.txt
+    tr '[:upper:]' '[:lower:]' &lt; $^ &gt; $@
+
+data/%.counts.tsv: scripts/wordcount.py data/%.txt
+    $^ $@
+
+fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
+    $^ $@
+
+# Archive for sharing
+zipf_results.tgz: ${ARCHIVED}
+    rm -rf zipf_results/
+    mkdir zipf_results/
+    cp $^ zipf_results/
+    tar -czf $@ zipf_results/
+    rm -r zipf_results/
+</code></pre>
+
 <p>Our filenames are certainly more verbose now, but in exchange we get:</p>
 <ol>
 <li>self-documenting filenames</li>
