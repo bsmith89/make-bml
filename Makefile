@@ -1,4 +1,4 @@
-LESSON=make-lesson
+LESSON=lesson
 
 all: ${LESSON}.html
 
