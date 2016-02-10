@@ -1200,42 +1200,41 @@ fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
 
 Here's the _full_ Makefile:
 
-> ```makefile
-> ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
->             data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
->             fig/abyss.lower.counts.png fig/sierra.lower.counts.png
->
-> # Dummy targets
-> all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
->         fig/sierra.lower.counts.png zipf_results.tgz
->
-> clean:
-> 	rm --force data/* fig/*
->
-> .PHONY: all clean
->
-> # Analysis and plotting
-> data/%.txt: books/%.txt
-> 	cp $^ $@
->
-> data/%.lower.txt: data/%.txt
-> 	tr '[:upper:]' '[:lower:]' < $^ > $@
->
-> data/%.counts.tsv: scripts/wordcount.py data/%.txt
-> 	$^ $@
->
-> fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
-> 	$^ $@
->
-> # Archive for sharing
-> zipf_results.tgz: ${ARCHIVED}
-> 	rm -rf zipf_results/
-> 	mkdir zipf_results/
-> 	cp $^ zipf_results/
-> 	tar -czf $@ zipf_results/
-> 	rm -r zipf_results/
-> ``````````
-<!--Those extra backticks are because of Vim syntax highlighting.-->
+```makefile
+ARCHIVED := data/isles.lower.counts.tsv data/abyss.lower.counts.tsv \
+            data/sierra.lower.counts.tsv fig/isles.lower.counts.png \
+            fig/abyss.lower.counts.png fig/sierra.lower.counts.png
+
+# Dummy targets
+all: fig/isles.lower.counts.png fig/abyss.lower.counts.png \
+        fig/sierra.lower.counts.png zipf_results.tgz
+
+clean:
+	rm --force data/* fig/*
+
+.PHONY: all clean
+
+# Analysis and plotting
+data/%.txt: books/%.txt
+	cp $^ $@
+
+data/%.lower.txt: data/%.txt
+	tr '[:upper:]' '[:lower:]' < $^ > $@
+
+data/%.counts.tsv: scripts/wordcount.py data/%.txt
+	$^ $@
+
+fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
+	$^ $@
+
+# Archive for sharing
+zipf_results.tgz: ${ARCHIVED}
+	rm -rf zipf_results/
+	mkdir zipf_results/
+	cp $^ zipf_results/
+	tar -czf $@ zipf_results/
+	rm -r zipf_results/
+```
 
 Our filenames are certainly more verbose now, but in exchange we get:
 
