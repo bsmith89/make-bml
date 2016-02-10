@@ -1368,7 +1368,13 @@ control during this lesson.
     all of the changes in a commit.
 
 
--   What do we version control?
--   Bootstrap your setup using _Make_
--   Download your data using _Make_
--   Debugging?
+## Exercises left to the reader ##
+
+> #### Challenge ####
+>
+> Download your data using _Make_.
+
+
+> #### Challenge ####
+>
+> Bootstrap your local setup using _Make_.
