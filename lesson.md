@@ -34,24 +34,24 @@ The `tree` command produces a handy tree-diagram of the directory.
 ```
 .
 ├── books
-│   ├── abyss.txt
-│   ├── isles.txt
-│   ├── last.txt
-│   ├── LICENSE_TEXTS.md
-│   └── sierra.txt
+│   ├── abyss.txt
+│   ├── isles.txt
+│   ├── last.txt
+│   ├── LICENSE_TEXTS.md
+│   └── sierra.txt
 ├── LICENSE.md
 ├── matplotlibrc
 ├── plotcount.py
 ├── README.md
 └── wordcount.py
 
-1 directory, 7 files
+1 directory, 10 files
 ```
 
 Be sure that you also have _Python 3_, _Git_, and _GNU Make_.
 
 ```bash
-sudo apt-get install git make
+sudo apt-get install python3 git make
 ```
 
 Configure git.
@@ -62,7 +62,6 @@ git config --global user.email you@example.com
 ```
 
 Install matplotlib.
-
 
 ```bash
 sudo apt-get install python3-matplotlib
@@ -139,13 +138,8 @@ Finally, let's visualize the results.
 The `ascii` argument has been added so that we get a text-based
 bar-plot printed to the screen.
 
-The script is also able to display a graphical bar-plot using matplotlib.
-
-```bash
-./plotcount.py isles.dat show
-```
-
-Or it can save the figure as a file.
+The script is also able to render a graphical bar-plot using matplotlib
+and save the figure to a given file.
 
 ```bash
 ./plotcount.py isles.dat isles.png
@@ -214,8 +208,8 @@ git add run_pipeline.sh
 git commit -m "Write a master script to run the pipeline."
 ```
 
-Notice that I didn't version control any of the products of our analysis.
-I'll talk more about this later.
+Notice that we didn't version control any of the products of our analysis.
+We'll talk more about this at the end of the tutorial.
 
 A master script is a good start, but it has a few shortcomings.
 
@@ -385,7 +379,7 @@ make isles.dat
 > When you run `make`, the program automatically looks in several places
 > for your Makefile.
 > While other filenames will work,
-> it is Good Idea to always call your Makefile `Makefile`.
+> it is a Good Idea to always call your Makefile `Makefile`.
 
 You should see the following print to the terminal:
 
@@ -544,7 +538,7 @@ git status
 ```
 
 Notice all the files that _Git_ wants to be tracking?
-Like I said before, we're not going to version control any of the intermediate
+Like before, we're not going to version control any of the intermediate
 or final products of our pipeline.
 To reflect this fact add a `.gitignore` file:
 
@@ -615,6 +609,7 @@ they're **phony** targets.
 ```bash
 git add Makefile
 git commit -m "Added 'all' and 'clean' recipes."
+rm clean
 ```
 
 
@@ -683,7 +678,8 @@ make --jobs
 ```
 
 Did you see it?
-The `--jobs` flag (just `-j` works too) tells _Make_ to run recipes in _parallel_.
+The `--jobs` flag (just "`-j`" works too) tells _Make_ to run recipes in
+_parallel_.
 Our dependency graph clearly shows that
 `abyss.dat` and `isles.dat` are mutually independent and can
 both be built at the same time.
@@ -705,7 +701,7 @@ principle.
 
 In _Make_ a number of features are designed to minimize repetitive code.
 Our current makefile does _not_ conform to this principle,
-but _Make_ is perfectly capable of solving the problem.
+but _Make_ is perfectly capable of doing so.
 
 
 ## Automatic variables ##
@@ -733,7 +729,10 @@ Both "`$^`" and "`$@`" are variables that refer to all of the prerequisites and
 target of a rule, respectively.
 In _Make_, variables are referenced with a leading dollar sign symbol.
 While we can also define our own variables,
-_Make_ _automatically_ defines a number of variables, including each of these.
+_Make_ _automatically_ defines a number of variables, like the ones
+I've just shown you.
+
+Therefore
 
 ```makefile
 zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
@@ -755,7 +754,7 @@ zipf_results.tgz: isles.dat abyss.dat isles.png abyss.png
 	rm -r zipf_results/
 ```
 
-Phew!  That's much less cluttered,
+That's a little less cluttered,
 and still perfectly understandable once you know what the variables mean.
 
 > #### Try it ####
@@ -865,8 +864,8 @@ Notice the backslashes in the variable definition
 splitting the list over three lines, instead of one very long line.
 Also notice that we assigned to the variable with "`:=`".
 This is generally a Good Idea;
-Assigning with a normal equals sign can result in non-intuitive behavior
-(for reasons we may not talk about).
+Assigning with a normal equals sign can result in non-intuitive behavior for
+reasons that we will not be talking about.
 Finally, notice that the items in our list are separated by _whitespace_,
 not commas.
 Prerequisite lists were the same way; this is just how lists of things work in
@@ -905,8 +904,8 @@ A Makefile can be an important part of a reproducible research pipeline.
 Have you noticed how simple it is now to add/remove books from our analysis?
 Just add or remove those files from the definition of `ARCHIVED` or
 the prerequisites for the `all` target!
-With the master script `run_pipeline.sh`,
-adding a third book required either more complicated
+With a master script approach, like `run_pipeline.sh`,
+adding an additional book required either more complicated
 or less transparent changes.
 
 
@@ -1078,7 +1077,8 @@ Simple!
 
 > #### Practice ####
 >
-> Move the plots and `zipf_results.tgz` to a directory called `fig/`.
+> Update your Makefile so that the plots and `zipf_results.tgz` are in a
+> directory called `fig/`.
 
 You can call this directory something else if you prefer, but `fig/` seems
 short and descriptive.
@@ -1095,9 +1095,9 @@ short and descriptive.
 Up to this point, we've been working with three types of data files,
 each with it's own file extension.
 
--   '`.txt`' files: the original book in plain-text
--   '`.dat`' files: word counts and percentages in a plain-text format
--   '`.png`' files: PNG formatted barplots
+-   "`.txt`" files: the original book in plain-text
+-   "`.dat`" files: word counts and percentages in a plain-text format
+-   "`.png`" files: PNG formatted barplots
 
 Using file extensions like these clearly indicates to anyone not familiar with
 your project what software to view each file with;
@@ -1112,14 +1112,14 @@ Our makefile says that the raw, book data feeds into word count data
 which feeds into barplot data.
 
 But the current naming scheme has one obvious ambiguity:
-'`.dat`' isn't particularly descriptive.
+"`.dat`" isn't particularly descriptive.
 Lots of file formats can be described as "data", including binary formats
 that would require specialized software to view.
 For tab-delimited, tabular data (data in rows and columns),
-'`.tsv`' is a more precise convention.
+"`.tsv`" is a more precise convention.
 
 Updating our pipeline to use this extension is as simple as find-and-replace
-'`.dat`' to '`.tsv`' in our Makefile.
+"`.dat`" to "`.tsv`" in our Makefile.
 If you're tired of `mv`-ing your files every time you change your pipeline
 you can also `make clean` followed by `make all` to check that everything still
 works.
@@ -1147,7 +1147,7 @@ set of characters for another.
 will read the mixedcase input file and write all lowercase to
 the output file.
 
-We can add this to our pipeline by first adding a rule.
+We can add this to our pipeline.
 We know the recipe is going to look like this:
 
 ```makefile
@@ -1178,7 +1178,7 @@ Now we can extend our pipeline with a variety of pre- and post-processing
 steps, give each of them a descriptive infix,
 and the names will be a self-documenting record of its origins.
 
-For reasons which will be explained in a minute, let's also make a dummy
+For reasons which may be apparent in a minute, let's also make a dummy
 preprocessing step which will just copy the books verbatim into our
 `data/` directory.
 
@@ -1194,7 +1194,7 @@ data/%.counts.tsv: scripts/wordcount.py data/%.txt
 	$^ $@
 
 fig/%.counts.png: scripts/plotcount.py data/%.counts.tsv
-    $^ $@
+	$^ $@
 ```
 
 Here's the _full_ Makefile:
