@@ -105,20 +105,20 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The <code>tree</code> command produces a handy tree-diagram of the directory.</p>
 <pre><code>.
 ├── books
-│   ├── abyss.txt
-│   ├── isles.txt
-│   ├── last.txt
-│   ├── LICENSE_TEXTS.md
-│   └── sierra.txt
+│   ├── abyss.txt
+│   ├── isles.txt
+│   ├── last.txt
+│   ├── LICENSE_TEXTS.md
+│   └── sierra.txt
 ├── LICENSE.md
 ├── matplotlibrc
 ├── plotcount.py
 ├── README.md
 └── wordcount.py
 
-1 directory, 7 files</code></pre>
+1 directory, 10 files</code></pre>
 <p>Be sure that you also have <em>Python 3</em>, <em>Git</em>, and <em>GNU Make</em>.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> apt-get install git make</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">sudo</span> apt-get install python3 git make</code></pre></div>
 <p>Configure git.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> config --global user.name <span class="st">&quot;Your Name&quot;</span>
 <span class="kw">git</span> config --global user.email you@example.com</code></pre></div>
@@ -151,9 +151,7 @@ a	1308	2.30565838181</code></pre>
 <p>Finally, let’s visualize the results.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">./plotcount.py</span> isles.dat ascii</code></pre></div>
 <p>The <code>ascii</code> argument has been added so that we get a text-based bar-plot printed to the screen.</p>
-<p>The script is also able to display a graphical bar-plot using matplotlib.</p>
-<div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">./plotcount.py</span> isles.dat show</code></pre></div>
-<p>Or it can save the figure as a file.</p>
+<p>The script is also able to render a graphical bar-plot using matplotlib and save the figure to a given file.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">./plotcount.py</span> isles.dat isles.png</code></pre></div>
 <p>Together these scripts implement a common workflow:</p>
 <ol type="1">
@@ -197,7 +195,7 @@ a	1308	2.30565838181</code></pre>
 <span class="kw">git</span> commit -m <span class="st">&quot;Write scripts to test Zipf&#39;s law.&quot;</span>
 <span class="kw">git</span> add run_pipeline.sh
 <span class="kw">git</span> commit -m <span class="st">&quot;Write a master script to run the pipeline.&quot;</span></code></pre></div>
-<p>Notice that I didn’t version control any of the products of our analysis. I’ll talk more about this later.</p>
+<p>Notice that we didn’t version control any of the products of our analysis. We’ll talk more about this at the end of the tutorial.</p>
 <p>A master script is a good start, but it has a few shortcomings.</p>
 <p>Let’s imagine that we adjusted the width of the bars in our plot produced by <code>plotcount.py</code>.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">nano</span> plotcount.py
@@ -272,7 +270,7 @@ a	1308	2.30565838181</code></pre>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">make</span> isles.dat</code></pre></div>
 <blockquote>
 <h4 id="aside">Aside</h4>
-<p>Notice that we didn’t tell <em>Make</em> to use <code>Makefile</code>. When you run <code>make</code>, the program automatically looks in several places for your Makefile. While other filenames will work, it is Good Idea to always call your Makefile <code>Makefile</code>.</p>
+<p>Notice that we didn’t tell <em>Make</em> to use <code>Makefile</code>. When you run <code>make</code>, the program automatically looks in several places for your Makefile. While other filenames will work, it is a Good Idea to always call your Makefile <code>Makefile</code>.</p>
 </blockquote>
 <p>You should see the following print to the terminal:</p>
 <pre><code>./wordcount.py books/isles.txt isles.dat</code></pre>
@@ -353,7 +351,7 @@ rm -r zipf_results/</code></pre>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> add Makefile
 <span class="kw">git</span> commit -m <span class="st">&quot;Finish translating pipeline script to a Makefile.&quot;</span>
 <span class="kw">git</span> status</code></pre></div>
-<p>Notice all the files that <em>Git</em> wants to be tracking? Like I said before, we’re not going to version control any of the intermediate or final products of our pipeline. To reflect this fact add a <code>.gitignore</code> file:</p>
+<p>Notice all the files that <em>Git</em> wants to be tracking? Like before, we’re not going to version control any of the intermediate or final products of our pipeline. To reflect this fact add a <code>.gitignore</code> file:</p>
 <pre class=".gitignore"><code>*.dat
 *.png
 zipf_results.tgz
@@ -380,7 +378,8 @@ LICENSE.md</code></pre>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="ot">.PHONY:</span><span class="dt"> all clean</span></code></pre></div>
 <p>This “special target” tells <em>Make</em> to assume that the targets “all”, and “clean” are <em>not</em> real files; they’re <strong>phony</strong> targets.</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">git</span> add Makefile
-<span class="kw">git</span> commit -m <span class="st">&quot;Added &#39;all&#39; and &#39;clean&#39; recipes.&quot;</span></code></pre></div>
+<span class="kw">git</span> commit -m <span class="st">&quot;Added &#39;all&#39; and &#39;clean&#39; recipes.&quot;</span>
+<span class="kw">rm</span> clean</code></pre></div>
 <h1 id="make-features-45-minutes"><em>Make</em> features [45 minutes]</h1>
 <p>Right now our Makefile looks like this:</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="co"># Dummy targets</span>
@@ -419,10 +418,10 @@ LICENSE.md</code></pre>
 <p>And check this out!</p>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">make</span> clean
 <span class="kw">make</span> --jobs</code></pre></div>
-<p>Did you see it? The <code>--jobs</code> flag (just <code>-j</code> works too) tells <em>Make</em> to run recipes in <em>parallel</em>. Our dependency graph clearly shows that <code>abyss.dat</code> and <code>isles.dat</code> are mutually independent and can both be built at the same time. Likewise for <code>abyss.png</code> and <code>isles.png</code>. If you’ve got a bunch of independent branches in your analysis, this can greatly speed up your build process.</p>
+<p>Did you see it? The <code>--jobs</code> flag (just “<code>-j</code>” works too) tells <em>Make</em> to run recipes in <em>parallel</em>. Our dependency graph clearly shows that <code>abyss.dat</code> and <code>isles.dat</code> are mutually independent and can both be built at the same time. Likewise for <code>abyss.png</code> and <code>isles.png</code>. If you’ve got a bunch of independent branches in your analysis, this can greatly speed up your build process.</p>
 <h2 id="d.r.y.-dont-repeat-yourself">D.R.Y. (Don’t Repeat Yourself)</h2>
 <p>In many programming language, the bulk of the language features are there to allow the programmer to describe long-winded computational routines as short, expressive, beautiful code. Features in Python or R like user-defined variables and functions are useful in part because they mean we don’t have to write out (or think about) all of the details over and over again. This good habit of writing things out only once is known as the D.R.Y. principle.</p>
-<p>In <em>Make</em> a number of features are designed to minimize repetitive code. Our current makefile does <em>not</em> conform to this principle, but <em>Make</em> is perfectly capable of solving the problem.</p>
+<p>In <em>Make</em> a number of features are designed to minimize repetitive code. Our current makefile does <em>not</em> conform to this principle, but <em>Make</em> is perfectly capable of doing so.</p>
 <h2 id="automatic-variables">Automatic variables</h2>
 <p>One overly repetitive part of our Makefile: Targets and prerequisites are in both the header <em>and</em> the recipe of each rule.</p>
 <p>It turns out, that</p>
@@ -431,7 +430,8 @@ LICENSE.md</code></pre>
 <p>can be rewritten as</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">isles.dat:</span><span class="dt"> books/isles.txt</span>
 	./wordcount.py <span class="ch">$^</span> <span class="ch">$@</span></code></pre></div>
-<p>Here we’ve replaced the prerequisite “<code>books/isles.txt</code>” in the recipe with “<code>$^</code>” and the target “<code>isles.dat</code>” with “<code>$@</code>”. Both “<code>$^</code>” and “<code>$@</code>” are variables that refer to all of the prerequisites and target of a rule, respectively. In <em>Make</em>, variables are referenced with a leading dollar sign symbol. While we can also define our own variables, <em>Make</em> <em>automatically</em> defines a number of variables, including each of these.</p>
+<p>Here we’ve replaced the prerequisite “<code>books/isles.txt</code>” in the recipe with “<code>$^</code>” and the target “<code>isles.dat</code>” with “<code>$@</code>”. Both “<code>$^</code>” and “<code>$@</code>” are variables that refer to all of the prerequisites and target of a rule, respectively. In <em>Make</em>, variables are referenced with a leading dollar sign symbol. While we can also define our own variables, <em>Make</em> <em>automatically</em> defines a number of variables, like the ones I’ve just shown you.</p>
+<p>Therefore</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">zipf_results.tgz:</span><span class="dt"> isles.dat abyss.dat isles.png abyss.png</span>
 	rm -rf zipf_results/
 	mkdir zipf_results/
@@ -445,7 +445,7 @@ LICENSE.md</code></pre>
 	cp <span class="ch">$^</span> zipf_results/
 	tar -czf <span class="ch">$@</span> zipf_results/
 	rm -r zipf_results/</code></pre></div>
-<p>Phew! That’s much less cluttered, and still perfectly understandable once you know what the variables mean.</p>
+<p>That’s a little less cluttered, and still perfectly understandable once you know what the variables mean.</p>
 <blockquote>
 <h4 id="try-it-3">Try it</h4>
 <div class="sourceCode"><pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">make</span> clean
@@ -494,7 +494,7 @@ LICENSE.md</code></pre>
 <span class="st">            sierra.dat sierra.png</span></code></pre></div>
 <p>Just like many other languages, in makefiles “<code>\</code>” is a line-continuation character. Think of this variable definition as a single line without the backslash.</p>
 <p>The variable <code>ARCHIVED</code> is a list of the files that we want to include in our tarball. Now wherever we write <code>${ARCHIVED}</code> it will be replaced with that list of files. The dollar sign, “<code>$</code>”, and curly-braces, “<code>{}</code>”, are both mandatory when inserting the contents of a variable.</p>
-<p>Notice the backslashes in the variable definition splitting the list over three lines, instead of one very long line. Also notice that we assigned to the variable with “<code>:=</code>”. This is generally a Good Idea; Assigning with a normal equals sign can result in non-intuitive behavior (for reasons we may not talk about). Finally, notice that the items in our list are separated by <em>whitespace</em>, not commas. Prerequisite lists were the same way; this is just how lists of things work in makefiles. If you included commas they would be considered parts of the filenames.</p>
+<p>Notice the backslashes in the variable definition splitting the list over three lines, instead of one very long line. Also notice that we assigned to the variable with “<code>:=</code>”. This is generally a Good Idea; Assigning with a normal equals sign can result in non-intuitive behavior for reasons that we will not be talking about. Finally, notice that the items in our list are separated by <em>whitespace</em>, not commas. Prerequisite lists were the same way; this is just how lists of things work in makefiles. If you included commas they would be considered parts of the filenames.</p>
 <p>Using this variable we can replace the prerequisites of <code>zipf_results.tgz</code>. That rule would now be:</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">zipf_results.tgz:</span><span class="dt"> </span><span class="ch">${</span><span class="dt">ARCHIVED</span><span class="ch">}</span>
 	rm -rf zipf_results/
@@ -511,7 +511,7 @@ LICENSE.md</code></pre>
 <p>Does everything still work?</p>
 </blockquote>
 <h1 id="best-practices-for-make-based-projects-60-minutes">Best practices for <em>Make</em>-based projects [60 minutes]</h1>
-<p>A Makefile can be an important part of a reproducible research pipeline. Have you noticed how simple it is now to add/remove books from our analysis? Just add or remove those files from the definition of <code>ARCHIVED</code> or the prerequisites for the <code>all</code> target! With the master script <code>run_pipeline.sh</code>, adding a third book required either more complicated or less transparent changes.</p>
+<p>A Makefile can be an important part of a reproducible research pipeline. Have you noticed how simple it is now to add/remove books from our analysis? Just add or remove those files from the definition of <code>ARCHIVED</code> or the prerequisites for the <code>all</code> target! With a master script approach, like <code>run_pipeline.sh</code>, adding an additional book required either more complicated or less transparent changes.</p>
 <h2 id="whats-a-prerequisite">What’s a prerequisite?</h2>
 <p>We’ve talked a lot about the power of <em>Make</em> for rebuilding research outputs when input data changes. When doing novel data analysis, however, it’s very common for our <em>scripts</em> to be as or <em>more</em> dynamic than the data.</p>
 <p>What happens when we edit our scripts instead of changing our data?</p>
@@ -596,7 +596,7 @@ LICENSE.md</code></pre>
 <h3 id="output-finished-products-to-fig">Output finished products to <code>fig/</code></h3>
 <blockquote>
 <h4 id="practice-4">Practice</h4>
-<p>Move the plots and <code>zipf_results.tgz</code> to a directory called <code>fig/</code>.</p>
+<p>Update your Makefile so that the plots and <code>zipf_results.tgz</code> are in a directory called <code>fig/</code>.</p>
 </blockquote>
 <p>You can call this directory something else if you prefer, but <code>fig/</code> seems short and descriptive.</p>
 <blockquote>
@@ -607,14 +607,14 @@ LICENSE.md</code></pre>
 <h3 id="use-file-extensions-to-indicate-format">Use file extensions to indicate format</h3>
 <p>Up to this point, we’ve been working with three types of data files, each with it’s own file extension.</p>
 <ul>
-<li>‘<code>.txt</code>’ files: the original book in plain-text</li>
-<li>‘<code>.dat</code>’ files: word counts and percentages in a plain-text format</li>
-<li>‘<code>.png</code>’ files: PNG formatted barplots</li>
+<li>“<code>.txt</code>” files: the original book in plain-text</li>
+<li>“<code>.dat</code>” files: word counts and percentages in a plain-text format</li>
+<li>“<code>.png</code>” files: PNG formatted barplots</li>
 </ul>
 <p>Using file extensions like these clearly indicates to anyone not familiar with your project what software to view each file with; you won’t get much out of opening a PNG with a text editor. Whenever possible, use a widely used extension to make it easy for others to understand your data.</p>
 <p>File extensions also give us a handle for describing the flow of data in our pipeline. Pattern rules rely on this convention. Our makefile says that the raw, book data feeds into word count data which feeds into barplot data.</p>
-<p>But the current naming scheme has one obvious ambiguity: ‘<code>.dat</code>’ isn’t particularly descriptive. Lots of file formats can be described as “data”, including binary formats that would require specialized software to view. For tab-delimited, tabular data (data in rows and columns), ‘<code>.tsv</code>’ is a more precise convention.</p>
-<p>Updating our pipeline to use this extension is as simple as find-and-replace ‘<code>.dat</code>’ to ‘<code>.tsv</code>’ in our Makefile. If you’re tired of <code>mv</code>-ing your files every time you change your pipeline you can also <code>make clean</code> followed by <code>make all</code> to check that everything still works.</p>
+<p>But the current naming scheme has one obvious ambiguity: “<code>.dat</code>” isn’t particularly descriptive. Lots of file formats can be described as “data”, including binary formats that would require specialized software to view. For tab-delimited, tabular data (data in rows and columns), “<code>.tsv</code>” is a more precise convention.</p>
+<p>Updating our pipeline to use this extension is as simple as find-and-replace “<code>.dat</code>” to “<code>.tsv</code>” in our Makefile. If you’re tired of <code>mv</code>-ing your files every time you change your pipeline you can also <code>make clean</code> followed by <code>make all</code> to check that everything still works.</p>
 <p>You might want to update your “<code>clean</code>” recipe to remove all the junk like so:</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">clean:</span>
 	rm -f data/* fig/*</code></pre></div>
@@ -622,7 +622,7 @@ LICENSE.md</code></pre>
 <h3 id="infix-processing-hints">Infix processing hints</h3>
 <p>One of our goals in implementing best practices for our analysis pipeline is to make it easy to change it without rewriting everything. Let’s add a preprocessing step to our analysis that puts everything in lowercase before counting words.</p>
 <p>The program <code>tr</code> (short for “translate”) is a Unix-style filter that swaps one set of characters for another. <code>tr '[:upper:]' '[:lower:]' &lt; [input file] &gt; [output file]</code> will read the mixedcase input file and write all lowercase to the output file.</p>
-<p>We can add this to our pipeline by first adding a rule. We know the recipe is going to look like this:</p>
+<p>We can add this to our pipeline. We know the recipe is going to look like this:</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">tr &#39;[:</span><span class="dt">upper:]&#39; &#39;[:lower:]&#39; &lt; </span><span class="ch">$^</span><span class="dt"> &gt; </span><span class="ch">$@</span></code></pre></div>
 <blockquote>
 <h4 id="challenge-2">Challenge</h4>
@@ -634,7 +634,7 @@ LICENSE.md</code></pre>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">data/%.lower.txt:</span><span class="dt"> books/%.txt</span>
 	tr <span class="st">&#39;[:upper:]&#39;</span> <span class="st">&#39;[:lower:]&#39;</span> &lt; <span class="ch">$^</span> &gt; <span class="ch">$@</span></code></pre></div>
 <p>By including an <strong>infix</strong> of <code>.lower.</code> in our filename it’s easy to see that one file is a lowercase version of the mixedcase original. Now we can extend our pipeline with a variety of pre- and post-processing steps, give each of them a descriptive infix, and the names will be a self-documenting record of its origins.</p>
-<p>For reasons which will be explained in a minute, let’s also make a dummy preprocessing step which will just copy the books verbatim into our <code>data/</code> directory.</p>
+<p>For reasons which may be apparent in a minute, let’s also make a dummy preprocessing step which will just copy the books verbatim into our <code>data/</code> directory.</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dv">data/%.txt:</span><span class="dt"> books/%.txt</span>
 	cp <span class="ch">$^</span> <span class="ch">$@</span></code></pre></div>
 <p>And, in the spirit of infixes, we’ll rename <code>data/%.tsv</code> to be more descriptive.</p>
@@ -642,7 +642,7 @@ LICENSE.md</code></pre>
 	<span class="ch">$^</span> <span class="ch">$@</span>
 
 <span class="dv">fig/%.counts.png:</span><span class="dt"> scripts/plotcount.py data/%.counts.tsv</span>
-    <span class="ch">$^</span> <span class="ch">$@</span></code></pre></div>
+	<span class="ch">$^</span> <span class="ch">$@</span></code></pre></div>
 <p>Here’s the <em>full</em> Makefile:</p>
 <div class="sourceCode"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span class="dt">ARCHIVED </span><span class="ch">:=</span><span class="st"> data/isles.lower.counts.tsv data/abyss.lower.counts.tsv </span><span class="ch">\</span>
 <span class="st">            data/sierra.lower.counts.tsv fig/isles.lower.counts.png </span><span class="ch">\</span>
