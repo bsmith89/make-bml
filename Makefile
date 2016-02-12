@@ -1,5 +1,5 @@
 LESSON=lesson
-SITE_DIR=.site/
+SITE_DIR=.site
 CLEANUP = README.html ${LESSON}.html ${SITE_DIR}
 
 all: ${LESSON}.html
