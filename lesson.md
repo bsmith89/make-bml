@@ -311,9 +311,12 @@ isles.dat: books/isles.txt
 	./wordcount.py books/isles.txt isles.dat
 ```
 
-We have now written the simplest, non-trivial Makefile.
+We have now written the simplest, non-trivial Makefile[^makefile-name].
 It is pretty reminiscent of one of the lines from our master script.
 It is a good bet that you can figure out what this Makefile does.
+
+[^makefile-name]: While several other filenames will work, it is a Good Idea to
+    always call your Makefile `Makefile`.
 
 Be sure to notice a few syntactical items.
 
@@ -369,21 +372,17 @@ rm *.dat *.png
 make isles.dat
 ```
 
-> #### Aside ####
->
-> Notice that we didn't tell _Make_ to use `Makefile`.
-> When you run `make`, the program automatically looks in several places
-> for your Makefile.
-> While other filenames will work,
-> it is a Good Idea to always call your Makefile `Makefile`.
-
 You should see the following print to the terminal:
 
 ```
 ./wordcount.py books/isles.txt isles.dat
 ```
 
-By default, _Make_ prints the recipes that it executes.
+By default, _Make_ prints the recipes that it executes[^makefile-identification].
+
+[^makefile-identification]: Notice that we didn't tell _Make_ to use
+    `Makefile`.  When you run `make`, the program automatically looks in
+    several places for your Makefile.
 
 Let's see if we got what we expected.
 
@@ -726,7 +725,10 @@ target of a rule, respectively.
 In _Make_, variables are referenced with a leading dollar sign symbol.
 While we can also define our own variables,
 _Make_ _automatically_ defines a number of variables, like the ones
-I've just shown you.
+I've just shown you[^auto-vars].
+
+
+[^auto-vars]: See https://www.gnu.org/software/make/manual/html_node/Automatic-Variables.html].
 
 Therefore
 
@@ -861,12 +863,16 @@ splitting the list over three lines, instead of one very long line.
 Also notice that we assigned to the variable with "`:=`".
 This is generally a Good Idea;
 Assigning with a normal equals sign can result in non-intuitive behavior for
-reasons that we will not be talking about.
+reasons that we will not be talking about[^var-assign].
 Finally, notice that the items in our list are separated by _whitespace_,
 not commas.
 Prerequisite lists were the same way; this is just how lists of things work in
 makefiles.
 If you included commas they would be considered parts of the filenames.
+
+[^var-assign]: Variables are complicated in _Make_.
+    Read the extensive [documentation][man-var] about variable assignment.
+[man-var]: https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
 
 Using this variable we can replace the prerequisites of `zipf_results.tgz`.
 That rule would now be:
