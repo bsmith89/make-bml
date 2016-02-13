@@ -67,13 +67,6 @@ Install matplotlib.
 sudo apt-get install python3-matplotlib
 ```
 
-And, finally, load up your favorite terminal multi-plexer so we can recover if
-we get disconnected.
-
-```bash
-tmux
-```
-
 
 # Motivation [30 minutes] #
 
@@ -1367,13 +1360,5 @@ control during this lesson.
     all of the changes in a commit.
 
 
-## Exercises left to the reader ##
-
-> #### Challenge ####
->
-> Download your data using _Make_.
 
 
-> #### Challenge ####
->
-> Bootstrap your local setup using _Make_.
