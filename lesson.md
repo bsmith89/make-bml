@@ -522,6 +522,33 @@ Since none of those existed it remade the ones it could,
 Once those were finished it was able to make `abyss.png` and
 `isles.png`, before finally building `zipf_results.tgz`.
 
+You may also have gotten an additional line in your output similar to the
+following.
+
+```
+rm abyss.dat isles.dat abyss.png isles.png
+```
+
+Because you only asked for `zipf_results.tgz`, _Make_ thinks its doing
+you a favor by deleting the intermediate files.
+As computational biologists we know to never trust our analyses until they've
+been tested and intermediate files are a valuable audit trail.
+To prevent the default behaviour, add the following to your Makefile.
+
+```makefile
+.SECONDARY:
+```
+
+Now remove the outputs and rerun your pipeline.
+
+```bash
+rm zipf_results.tgz *.dat *.png
+make zipf_results.tgz
+```
+
+`.SECONDARY` is one of a handful of **special targets** used to control _Make_'s
+behavior.
+
 > #### Try it ####
 > What happens if you `touch abyss.dat` and
 > then `make zipf_results.tgz`?
@@ -597,7 +624,7 @@ To avoid this problem add the following to your Makefile.
 .PHONY: all clean
 ```
 
-This "special target" tells _Make_ to assume that the targets "all", and "clean"
+This special target tells _Make_ to assume that the targets "all", and "clean"
 are _not_ real files;
 they're **phony** targets.
 
@@ -620,6 +647,7 @@ clean:
 	rm --force *.dat *.png zipf_results.tgz
 
 .PHONY: all clean
+.SECONDARY:
 
 # Analysis and plotting
 isles.dat: books/isles.txt
@@ -1217,6 +1245,7 @@ clean:
 	rm --force data/* fig/*
 
 .PHONY: all clean
+.SECONDARY:
 
 # Analysis and plotting
 data/%.txt: books/%.txt
