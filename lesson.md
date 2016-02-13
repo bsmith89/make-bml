@@ -1380,9 +1380,9 @@ control during this lesson.
     These should be version controlled, as they are subject to change
     as testing is adapted to the evolving pipeline.
 
-    Metadata should also be version controlled, since the format and
-    composition of the metadata is intimately linked with the analysis pipeline
-    itself.
+    In many cases metadata _should_ be version controlled, since the format
+    and composition of the metadata is intimately linked with the analysis
+    pipeline itself.
 
 3.  Aim to commit "atomic" changes to your pipeline.
 
