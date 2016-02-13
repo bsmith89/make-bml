@@ -95,6 +95,9 @@ The first step is to count the frequency of each word in the book.
 ./wordcount.py books/isles.txt isles.dat
 ```
 
+(The leading '`./`' is required so that Bash knows we're executing
+a file in the current directory rather than a command in our path.)
+
 Let's take a quick peek at the result.
 
 ```bash
@@ -935,7 +938,7 @@ as a prerequisites.
 
 ```makefile
 %.png: plotcounts.py %.dat
-	$^ $@
+	./$^ $@
 ```
 
 The header makes sense, but that's a strange looking recipe:
@@ -943,8 +946,11 @@ just two automatic variables.
 
 This recipe works because "`$^`" is replaced with all of the prerequisites.
 _In order_.
-When building `abyss.png`, for instance, it is replaced with
-`plotcounts.py abyss.dat`, which is actually exactly what we want.
+When building `abyss.png`, for instance, '`./$^ $@`' becomes
+`./plotcounts.py abyss.dat`, which is actually exactly what we want.
+
+(Remember that we need the leading '`./`' so that Bash knows we're executing
+a file in the current directory and not a command in our path.)
 
 > #### Try it ####
 >
@@ -981,10 +987,10 @@ We also need to update our Makefile to reflect the change:
 
 ```makefile
 %.dat: countwords.py books/%.txt
-	$^ $@
+	./$^ $@
 
 %.png: plotcounts.py %.dat
-	$^ $@
+	./$^ $@
 ```
 
 becomes:
