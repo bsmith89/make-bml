@@ -1,6 +1,0 @@
-site_name: "Make-BML: Make for reproducible analysis pipelines"
-theme: bootstrap
-repo_url: https://github.com/bsmith89/make-bml
-site_author: Byron J. Smith
-markdown_extensions:
-    - codehilite
