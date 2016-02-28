@@ -291,7 +291,7 @@ _Make_ is a computer program originally designed to automate the compilation
 and installation of software.
 _Make_ automates the process of building target files through a series of
 discrete steps.
-Despite it's original purpose, this design makes it a great fit for
+Despite its original purpose, this design makes it a great fit for
 bioinformatics pipelines, which often work by transforming data from one form
 to another (e.g. _raw data_ &#8594; _word counts_ &#8594; _???_ &#8594; _profit_).
 
